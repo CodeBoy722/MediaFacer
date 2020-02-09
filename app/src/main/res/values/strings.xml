@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MediaFacer</string>
+    <string name="mediafacer_examples">MediaFacer Examples</string>
+    <string name="picture_get">Picture Get</string>
+    <string name="video_get">Video Get</string>
+    <string name="audio_get">Audio Get</string>
+    <string name="picture_folder">Picture Folder</string>
+</resources>
