@@ -6,6 +6,10 @@ public class pictureContent {
     private String picturePath;
     private  String pictureSize;
     private  String imageUri;
+    private  String assertFileStringUri;
+    private  int pictureId;
+    private String date_added;
+    private String date_modified;
 
     public pictureContent() {
     }
@@ -48,5 +52,37 @@ public class pictureContent {
 
     public void setImageUri(String imageUri) {
         this.imageUri = imageUri;
+    }
+
+    public String getAssertFileStringUri() {
+        return assertFileStringUri;
+    }
+
+    public void setAssertFileStringUri(String assertFileStringUri) {
+        this.assertFileStringUri = assertFileStringUri;
+    }
+
+    public int getPictureId() {
+        return pictureId;
+    }
+
+    public void setPictureId(int pictureId) {
+        this.pictureId = pictureId;
+    }
+
+    public String getDate_added() {
+        return date_added;
+    }
+
+    public void setDate_added(String date_added) {
+        this.date_added = date_added;
+    }
+
+    public String getDate_modified() {
+        return date_modified;
+    }
+
+    public void setDate_modified(String date_modified) {
+        this.date_modified = date_modified;
     }
 }

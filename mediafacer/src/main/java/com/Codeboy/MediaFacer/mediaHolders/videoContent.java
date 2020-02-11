@@ -8,6 +8,11 @@ public class videoContent {
     private long videoDuration;
     private String videoSize;
     private String AssetFileStringUri;
+    private String album;
+    private String artist;
+    private String date_added;
+    private String date_modified;
+
 
     public videoContent(){
 
@@ -68,5 +73,37 @@ public class videoContent {
 
     public void setAssetFileStringUri(String assetFileStringUri) {
         AssetFileStringUri = assetFileStringUri;
+    }
+
+    public String getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public String getDate_added() {
+        return date_added;
+    }
+
+    public void setDate_added(String date_added) {
+        this.date_added = date_added;
+    }
+
+    public String getDate_modified() {
+        return date_modified;
+    }
+
+    public void setDate_modified(String date_modified) {
+        this.date_modified = date_modified;
     }
 }

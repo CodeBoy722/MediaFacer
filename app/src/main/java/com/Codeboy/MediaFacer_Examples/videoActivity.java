@@ -20,14 +20,12 @@ public class videoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
 
-
         ViewPager dataPager = findViewById(R.id.data_pager);
         dataPager.setOffscreenPageLimit(3);
         dataPager.setAdapter(new ContentPager(getSupportFragmentManager(),FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT));
 
 
     }
-
 
     private class ContentPager extends FragmentPagerAdapter {
         ContentPager(@NonNull FragmentManager fm, int behavior) {

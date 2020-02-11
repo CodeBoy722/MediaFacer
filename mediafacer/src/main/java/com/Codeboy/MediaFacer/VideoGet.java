@@ -36,7 +36,8 @@ public class VideoGet {
     public ArrayList<videoContent> getAllVideoContent(Uri contentLocation) {
         ArrayList<videoContent> allVideo = new ArrayList<>();
         @SuppressLint("InlinedApi") String[] projection = { MediaStore.Video.VideoColumns.DATA ,MediaStore.Video.Media.DISPLAY_NAME,MediaStore.Video.Media.DURATION,
-                MediaStore.Video.Media.SIZE,MediaStore.Video.Media._ID,MediaStore.Video.Media.DATE_ADDED};
+                MediaStore.Video.Media.SIZE,MediaStore.Video.Media._ID,MediaStore.Video.Media.DATE_ADDED,MediaStore.Video.Media.DATE_MODIFIED,
+                MediaStore.Video.Media.ALBUM,MediaStore.Video.Media.ARTIST};
         cursor = videoContex.getContentResolver().query(contentLocation, projection, null, null, "LOWER ("+MediaStore.Video.Media.DATE_ADDED+") ASC");//DESC
         try {
             cursor.moveToFirst();
@@ -56,6 +57,14 @@ public class VideoGet {
 
                 Uri contentUri = Uri.withAppendedPath(contentLocation, String.valueOf(id));
                 videoContent.setAssetFileStringUri(contentUri.toString());
+
+                videoContent.setAlbum(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.ALBUM)));
+
+                videoContent.setArtist(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.ARTIST)));
+
+                videoContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)));
+
+                videoContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED)));
 
                 allVideo.add(videoContent);
             }while(cursor.moveToNext());
@@ -98,15 +107,16 @@ public class VideoGet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return allVideoFolders;
     }
 
 
+    @SuppressLint("InlinedApi")
     public ArrayList<videoContent> getAllVideoContentInFolder(String folderPath){
         ArrayList<videoContent> videoContents = new ArrayList<>();
         @SuppressLint("InlinedApi") String[] projection = { MediaStore.Video.VideoColumns.DATA ,MediaStore.Video.Media.DISPLAY_NAME,MediaStore.Video.Media.DURATION,
-                MediaStore.Video.Media.SIZE,MediaStore.Video.Media._ID,MediaStore.Video.Media.DATE_ADDED};
+                MediaStore.Video.Media.SIZE,MediaStore.Video.Media._ID,MediaStore.Video.Media.DATE_ADDED,MediaStore.Video.Media.DATE_MODIFIED,
+                MediaStore.Video.Media.ALBUM,MediaStore.Video.Media.ARTIST};
         cursor = videoContex.getContentResolver().query(externalContentUri, projection,
                 MediaStore.Video.Media.DATA + " like ? ", new String[] {"%"+folderPath+"%"}, "LOWER ("+MediaStore.Video.Media.DATE_ADDED+") ASC");//DESC
         try {
@@ -127,6 +137,14 @@ public class VideoGet {
 
                 Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
                 videoContent.setAssetFileStringUri(contentUri.toString());
+
+                videoContent.setAlbum(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.ALBUM)));
+
+                videoContent.setArtist(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.ARTIST)));
+
+                videoContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)));
+
+                videoContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED)));
 
                 videoContents.add(videoContent);
             }while(cursor.moveToNext());
