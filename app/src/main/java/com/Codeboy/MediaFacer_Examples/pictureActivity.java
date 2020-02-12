@@ -81,7 +81,7 @@ public class pictureActivity extends AppCompatActivity {
         folderSelector = findViewById(R.id.folder_selector);
 
         final ArrayList<pictureFolderContent> pictureFolders = new ArrayList<>();
-        pictureFolders.add(new pictureFolderContent("all","All Pictures",null));
+        pictureFolders.add(new pictureFolderContent("all","*All*",null));
         pictureFolders.addAll(MediaFacer.withPictureContex(this).getPicturePaths());
 
         final ArrayList<String> folders = new ArrayList<>();
@@ -95,7 +95,7 @@ public class pictureActivity extends AppCompatActivity {
         folderSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(folders.get(position).equals("All Pictures")){
+                if(folders.get(position).equals("*All*")){
                     allPhotos = MediaFacer
                             .withPictureContex(pictureActivity.this)
                             .getAllPictureContents(PictureGet.externalContentUri);

@@ -35,21 +35,19 @@
         android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
-        <TextView
+        <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/picture_folder"
-            android:layout_weight="1"
             android:layout_gravity="center|start"
-            android:ellipsize="end"
-            android:maxLines="1"
             android:layout_marginStart="5dp"
-            android:textStyle="bold"/>
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_pictures" />
 
         <Spinner
             android:id="@+id/folder_selector"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center|start"
             android:layout_weight="7" />
 
     </LinearLayout>

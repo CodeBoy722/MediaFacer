@@ -71,7 +71,7 @@ public class imageRecycleAdapter extends RecyclerView.Adapter<imageRecycleAdapte
             pictureContent pic = pictureList.get(position);
             Glide.with(pictureActivity)
                     .load(pic.getPicturePath())
-                    .apply(new RequestOptions().placeholder(R.drawable.ic_mediafacer))
+                    .apply(new RequestOptions().placeholder(R.drawable.ic_mediafacer).centerCrop())
                     .into(picture);
         }
 
