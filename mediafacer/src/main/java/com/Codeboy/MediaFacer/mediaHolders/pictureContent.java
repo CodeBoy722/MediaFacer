@@ -4,7 +4,7 @@ public class pictureContent {
 
     private String picturName;
     private String picturePath;
-    private  String pictureSize;
+    private  Long pictureSize;
     private  String imageUri;
     private  String assertFileStringUri;
     private  int pictureId;
@@ -14,7 +14,7 @@ public class pictureContent {
     public pictureContent() {
     }
 
-    public pictureContent(String picturName, String picturePath, String pictureSize, String imageUri) {
+    public pictureContent(String picturName, String picturePath, long pictureSize, String imageUri) {
         this.picturName = picturName;
         this.picturePath = picturePath;
         this.pictureSize = pictureSize;
@@ -38,11 +38,11 @@ public class pictureContent {
         this.picturePath = picturePath;
     }
 
-    public String getPictureSize() {
+    public long getPictureSize() {
         return pictureSize;
     }
 
-    public void setPictureSize(String pictureSize) {
+    public void setPictureSize(long pictureSize) {
         this.pictureSize = pictureSize;
     }
 

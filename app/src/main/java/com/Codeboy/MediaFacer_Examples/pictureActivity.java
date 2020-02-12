@@ -18,6 +18,7 @@ import com.Codeboy.MediaFacer.PictureGet;
 import com.Codeboy.MediaFacer.mediaHolders.pictureContent;
 import com.Codeboy.MediaFacer.mediaHolders.pictureFolderContent;
 import com.Codeboy.MediaFacer_Examples.adapters.imageRecycleAdapter;
+import com.Codeboy.MediaFacer_Examples.fragments.pictureInfo;
 
 import java.util.ArrayList;
 
@@ -70,7 +71,9 @@ public class pictureActivity extends AppCompatActivity {
     }
 
     private void showPictureInfo(pictureContent picture){
-
+        pictureInfo pictureDetails = new pictureInfo();
+        pictureDetails.setPicture(picture);
+        pictureDetails.show(getSupportFragmentManager(),"picture_info");
     }
 
     private void displayPictureInFragment(pictureContent picture, int position){
