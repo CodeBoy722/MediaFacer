@@ -36,8 +36,9 @@ public class PictureGet {
 
     public ArrayList<pictureContent> getAllPictureContents(Uri contentLocation){
         ArrayList<pictureContent> images = new ArrayList<>();
-        String[] projection = { MediaStore.Images.ImageColumns.DATA ,MediaStore.Images.Media.DISPLAY_NAME,
-                MediaStore.Images.Media.SIZE, MediaStore.Images.Media.DATE_ADDED};
+        String[] projection = { MediaStore.Images.Media.DATA ,MediaStore.Images.Media.DISPLAY_NAME,
+                MediaStore.Images.Media.SIZE, MediaStore.Images.Media.DATE_ADDED,MediaStore.Images.Media._ID,
+                MediaStore.Images.Media.DATE_MODIFIED};
         cursor = pictureContex.getContentResolver().query( contentLocation, projection, null, null,
                 "LOWER ("+MediaStore.Images.Media.DATE_ADDED+") ASC");
 
@@ -65,11 +66,11 @@ public class PictureGet {
                 images.add(pictureContent);
             }while(cursor.moveToNext());
             cursor.close();
-            ArrayList<pictureContent> reSelection = new ArrayList<>();
+           /* ArrayList<pictureContent> reSelection = new ArrayList<>();
             for(int i = images.size()-1;i > 0;i--){
                 reSelection.add(images.get(i));
             }
-            images  = reSelection;
+            images  = reSelection;*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,8 +79,9 @@ public class PictureGet {
 
     public ArrayList<pictureContent> getAllPictureContentInFolder(String folderpath){
         ArrayList<pictureContent> images = new ArrayList<>();
-        String[] projection = { MediaStore.Images.ImageColumns.DATA ,MediaStore.Images.Media.DISPLAY_NAME,
-                MediaStore.Images.Media.SIZE,MediaStore.Images.Media.DATE_ADDED };
+        String[] projection = { MediaStore.Images.Media.DATA ,MediaStore.Images.Media.DISPLAY_NAME,
+                MediaStore.Images.Media.SIZE,MediaStore.Images.Media.DATE_ADDED, MediaStore.Images.Media._ID,
+                MediaStore.Images.Media.DATE_MODIFIED};
         cursor = pictureContex.getContentResolver().query( externalContentUri, projection, MediaStore.Images.Media.DATA + " like ? ", new String[] {"%"+folderpath+"%"},
                 "LOWER ("+MediaStore.Images.Media.DATE_ADDED+") ASC");
 
@@ -107,11 +109,11 @@ public class PictureGet {
                 images.add(pictureContent);
             }while(cursor.moveToNext());
             cursor.close();
-            ArrayList<pictureContent> reSelection = new ArrayList<>();
-            for(int i = images.size()-1;i > -1;i--){
-                reSelection.add(images.get(i));
-            }
-            images = reSelection;
+//            ArrayList<pictureContent> reSelection = new ArrayList<>();
+//            for(int i = images.size()-1;i > -1;i--){
+//                reSelection.add(images.get(i));
+//            }
+//            images = reSelection;
         } catch (Exception e) {
             e.printStackTrace();
         }

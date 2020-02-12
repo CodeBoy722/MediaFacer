@@ -4,5 +4,5 @@
     <string name="picture_get">Picture Get</string>
     <string name="video_get">Video Get</string>
     <string name="audio_get">Audio Get</string>
-    <string name="picture_folder">Picture Folder</string>
+    <string name="picture_folder">Folder :</string>
 </resources>
