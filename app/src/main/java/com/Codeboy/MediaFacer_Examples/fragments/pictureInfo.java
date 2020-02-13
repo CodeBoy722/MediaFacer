@@ -18,6 +18,8 @@ import com.Codeboy.MediaFacer_Examples.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.util.Date;
+
 public class pictureInfo extends DialogFragment {
 
     private pictureContent picture;
@@ -51,8 +53,12 @@ public class pictureInfo extends DialogFragment {
         filename.setText(picture.getPicturName());
         filepath.setText(picture.getPicturePath());
         size.setText(mediaDataCalculator.convertBytes(picture.getPictureSize()));
-        date_added.setText(picture.getDate_added());
-        last_modified.setText(picture.getDate_modified());
+
+        Date da = new Date(picture.getDate_added());
+        Date dm = new Date(picture.getDate_modified());
+
+        date_added.setText(da.toString());
+        last_modified.setText(dm.toString());
 
         Glide.with(getActivity())
                 .load(picture.getPicturePath())

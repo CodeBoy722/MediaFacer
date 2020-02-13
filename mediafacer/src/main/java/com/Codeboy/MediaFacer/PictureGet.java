@@ -59,9 +59,9 @@ public class PictureGet {
                 Uri contentUri = Uri.withAppendedPath(contentLocation, String.valueOf(id));
                 pictureContent.setAssertFileStringUri(contentUri.toString());
 
-                pictureContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)));
+                pictureContent.setDate_added(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)));
 
-                pictureContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)));
+                pictureContent.setDate_modified(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)));
 
                 images.add(pictureContent);
             }while(cursor.moveToNext());
@@ -102,9 +102,9 @@ public class PictureGet {
                 Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
                 pictureContent.setAssertFileStringUri(contentUri.toString());
 
-                pictureContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)));
+                pictureContent.setDate_added(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)));
 
-                pictureContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)));
+                pictureContent.setDate_modified(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)));
 
                 images.add(pictureContent);
             }while(cursor.moveToNext());

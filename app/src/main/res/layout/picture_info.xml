@@ -7,109 +7,195 @@
 
     <ImageView
         android:id="@+id/pic"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="3dp"
         app:srcCompat="@drawable/ic_pictures" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/pic"
         android:background="@android:color/white"
-        android:orientation="horizontal"
         android:baselineAligned="false">
 
+
         <LinearLayout
-            android:layout_width="0dp"
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:layout_marginTop="3dp"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="start|center"
+                android:layout_marginStart="5dp"
+                android:layout_weight="5"
                 android:text="@string/filename"
-                android:layout_marginStart="5dp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center"
-                android:text="@string/fullpath"
-                android:layout_marginStart="5dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center"
-                android:text="@string/size"
-                android:layout_marginStart="5dp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center"
-                android:text="@string/date_added"
-                android:layout_marginStart="5dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center"
-                android:text="@string/last_modified"
-                android:layout_marginStart="5dp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:orientation="vertical">
+                android:textColor="@android:color/holo_purple"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/filename"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center"
-                android:text="@string/filename" />
-
-            <TextView
-                android:id="@+id/fullpath"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center"
-                android:text="@string/fullpath" />
-
-            <TextView
-                android:id="@+id/size"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center"
-                android:text="@string/size" />
-
-            <TextView
-                android:id="@+id/date_added"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center"
-                android:text="@string/date_added" />
-
-            <TextView
-                android:id="@+id/last_modified"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center"
-                android:text="@string/last_modified" />
+                android:layout_weight="5"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/filename"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:layout_marginStart="5dp"
+                android:layout_weight="5"
+                android:text="@string/fullpath"
+                android:textColor="@android:color/holo_purple"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/fullpath"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:layout_weight="5"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/fullpath"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:layout_marginStart="5dp"
+                android:layout_weight="5"
+                android:text="@string/size"
+                android:textColor="@android:color/holo_purple"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:layout_weight="5"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/size"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:layout_marginStart="5dp"
+                android:layout_weight="5"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/date_added"
+                android:textColor="@android:color/holo_purple"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/date_added"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:layout_weight="5"
+                android:text="@string/date_added"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:layout_marginStart="5dp"
+                android:layout_weight="5"
+                android:text="@string/last_modified"
+                android:textColor="@android:color/holo_purple"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/last_modified"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:layout_weight="5"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/last_modified"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </RelativeLayout>

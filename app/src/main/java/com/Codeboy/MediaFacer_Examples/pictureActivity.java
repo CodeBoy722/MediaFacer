@@ -50,14 +50,14 @@ public class pictureActivity extends AppCompatActivity {
         imageRecycleAdapter.pictureActionListrener actionListener = new imageRecycleAdapter.pictureActionListrener() {
             @Override
             public void onPictureItemClicked(int position) {
-                //show picture in fragment
-                showPictureInfo(allPhotos.get(position));
+                //show picture information
+                displayPictureInFragment(allPhotos.get(position),position);
             }
 
             @Override
             public void onPictureItemLongClicked(int position) {
-                //show picture information
-                displayPictureInFragment(allPhotos.get(position),position);
+                //show picture in fragment
+                showPictureInfo(allPhotos.get(position));
             }
         };
         imageRecycleAdapter pictureAdapter = new imageRecycleAdapter(this,allPhotos,actionListener);

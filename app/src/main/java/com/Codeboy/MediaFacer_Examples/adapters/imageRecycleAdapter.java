@@ -1,6 +1,7 @@
 package com.Codeboy.MediaFacer_Examples.adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,8 +71,8 @@ public class imageRecycleAdapter extends RecyclerView.Adapter<imageRecycleAdapte
         void Bind(){
             pictureContent pic = pictureList.get(position);
             Glide.with(pictureActivity)
-                    .load(pic.getPicturePath())
-                    .apply(new RequestOptions().placeholder(R.drawable.ic_mediafacer).centerCrop())
+                    .load(Uri.parse(pic.getAssertFileStringUri()))
+                    .apply(new RequestOptions().centerCrop())
                     .into(picture);
         }
 

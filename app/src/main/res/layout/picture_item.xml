@@ -11,10 +11,9 @@
 
         <ImageView
             android:id="@+id/picture"
-            android:padding="2dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:srcCompat="@drawable/ic_mediafacer" />
+            android:padding="2dp" />
 
     </androidx.cardview.widget.CardView>
 

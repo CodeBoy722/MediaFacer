@@ -5,20 +5,19 @@ public class pictureContent {
     private String picturName;
     private String picturePath;
     private  Long pictureSize;
-    private  String imageUri;
     private  String assertFileStringUri;
     private  int pictureId;
-    private String date_added;
-    private String date_modified;
+    private  int date_added;
+    private  int date_modified;
 
     public pictureContent() {
     }
 
-    public pictureContent(String picturName, String picturePath, long pictureSize, String imageUri) {
+    public pictureContent(String picturName, String picturePath, long pictureSize, String assertFileStringUri) {
         this.picturName = picturName;
         this.picturePath = picturePath;
         this.pictureSize = pictureSize;
-        this.imageUri = imageUri;
+        this.assertFileStringUri = assertFileStringUri;
     }
 
 
@@ -46,14 +45,6 @@ public class pictureContent {
         this.pictureSize = pictureSize;
     }
 
-    public String getImageUri() {
-        return imageUri;
-    }
-
-    public void setImageUri(String imageUri) {
-        this.imageUri = imageUri;
-    }
-
     public String getAssertFileStringUri() {
         return assertFileStringUri;
     }
@@ -70,19 +61,20 @@ public class pictureContent {
         this.pictureId = pictureId;
     }
 
-    public String getDate_added() {
+    public int getDate_added() {
         return date_added;
     }
 
-    public void setDate_added(String date_added) {
+    public void setDate_added(int date_added) {
         this.date_added = date_added;
     }
 
-    public String getDate_modified() {
+    public int getDate_modified() {
         return date_modified;
     }
 
-    public void setDate_modified(String date_modified) {
+    public void setDate_modified(int date_modified) {
         this.date_modified = date_modified;
     }
+
 }
