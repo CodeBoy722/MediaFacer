@@ -16,7 +16,7 @@ public class videoFolderContent {
 
     }
 
-    public videoFolderContent(String folderName, String folderPath) {
+    public videoFolderContent(String folderPath,String folderName) {
         this.folderName = folderName;
         this.folderPath = folderPath;
     }
