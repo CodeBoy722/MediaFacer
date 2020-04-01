@@ -3,7 +3,6 @@ package com.Codeboy.MediaFacer_Examples.fragments;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,20 +17,19 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.Codeboy.MediaFacer.AudioGet;
-import com.Codeboy.MediaFacer.MediaFacer;
 import com.Codeboy.MediaFacer.mediaHolders.audioContent;
 import com.Codeboy.MediaFacer_Examples.R;
 import com.Codeboy.MediaFacer_Examples.adapters.audioRecycleAdapter;
 
 import java.util.ArrayList;
 
-public class fragmentAudioContents extends Fragment {
+public class fragment_audioDataDisplay extends Fragment {
 
-    private MediaPlayer player;
-    private ArrayList<audioContent> audioContents;
+    private TextView title;
     private RecyclerView data_recycler;
-    private ProgressBar progressBar;
+    private MediaPlayer player;
+    private String Title;
+    private ArrayList<audioContent> files;
 
     @Nullable
     @Override
@@ -43,10 +41,12 @@ public class fragmentAudioContents extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        progressBar = view.findViewById(R.id.progress);
+        ProgressBar progressBar = view.findViewById(R.id.progress);
         progressBar.setVisibility(View.GONE);
-        TextView title = view.findViewById(R.id.title);
-        title.setVisibility(View.GONE);
+
+        title = view.findViewById(R.id.title);
+        title.setText(Title);
+        title.setVisibility(View.VISIBLE);
 
         data_recycler = view.findViewById(R.id.data_recycler);
         data_recycler.setHasFixedSize(true);
@@ -54,14 +54,32 @@ public class fragmentAudioContents extends Fragment {
         data_recycler.setDrawingCacheEnabled(true);
         data_recycler.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         data_recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        loadAudioData();
+
+        showData(files);
     }
 
-    private void loadAudioData(){
-        if(audioContents == null){
-            AsyncTask<Object,Integer,ArrayList<audioContent>> asyncTask = new getAudioTask();
-            asyncTask.execute();
-        }
+    void setType(String type, String name, ArrayList<audioContent> files){
+        Title = type+" : "+name;
+        this.files = files;
+    }
+
+    private void showData(ArrayList<audioContent> files){
+
+        audioRecycleAdapter.musicActionListerner listerner = new audioRecycleAdapter.musicActionListerner() {
+            @Override
+            public void onMusicItemClicked(int position,audioContent audio) {
+                playAudio(audio);
+            }
+
+            @Override
+            public void onMusicItemLongClicked(int position) {
+
+            }
+        };
+
+        audioRecycleAdapter allaudio = new audioRecycleAdapter(getActivity(),files,listerner);
+        data_recycler.setAdapter(allaudio);
+
     }
 
     private void playAudio(audioContent audio){
@@ -100,41 +118,6 @@ public class fragmentAudioContents extends Fragment {
                 e.printStackTrace();
             }
         }
-    }
-
-    private class getAudioTask extends AsyncTask<Object,Integer, ArrayList<audioContent>>{
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected ArrayList<audioContent> doInBackground(Object... objects) {
-            audioContents = MediaFacer.withAudioContex(getActivity()).getAllAudioContent(AudioGet.externalContentUri);
-            return audioContents;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<audioContent> audioContents) {
-            super.onPostExecute(audioContents);
-            audioRecycleAdapter.musicActionListerner listerner = new audioRecycleAdapter.musicActionListerner() {
-                @Override
-                public void onMusicItemClicked(int position,audioContent audio) {
-                    playAudio(audio);
-                }
-
-                @Override
-                public void onMusicItemLongClicked(int position) {
-
-                }
-            };
-            audioRecycleAdapter allaudio = new audioRecycleAdapter(getActivity(),audioContents,listerner);
-            data_recycler.setAdapter(allaudio);
-            progressBar.setVisibility(View.GONE);
-        }
-
     }
 
     @Override

@@ -10,4 +10,10 @@
     <string name="size">Size</string>
     <string name="date_added">Date Added</string>
     <string name="last_modified">Last Modified</string>
+    <string name="all_audio">All Audio</string>
+    <string name="albums">Albums</string>
+    <string name="artists">Artists</string>
+    <string name="folders">Folders</string>
+    <string name="title">Title</string>
+    <string name="artist">artist</string>
 </resources>

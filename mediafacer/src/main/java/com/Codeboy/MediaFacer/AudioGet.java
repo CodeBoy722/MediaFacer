@@ -68,9 +68,19 @@ public class AudioGet {
                         }
                     }*/
 
-                    audioContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
+                    try{
+                        audioContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        audioContent.setDate_added("unknown");
+                    }
 
-                    audioContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
+                    try{
+                        audioContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        audioContent.setDate_modified("unknown");
+                    }
 
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                     audioContent.setFilePath(path);
@@ -140,9 +150,19 @@ public class AudioGet {
                     Uri contentUri = Uri.withAppendedPath(contentLocation, String.valueOf(id));
                     audioContent.setAssetFileStringUri(contentUri.toString());
 
-                    audioContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
+                    try{
+                        audioContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        audioContent.setDate_added("unknown");
+                    }
 
-                    audioContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
+                    try{
+                        audioContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        audioContent.setDate_modified("unknown");
+                    }
 
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                     audioContent.setFilePath(path);
@@ -203,9 +223,19 @@ public class AudioGet {
                     Uri contentUri = Uri.withAppendedPath(contentLocation, String.valueOf(id));
                     audioContent.setAssetFileStringUri(contentUri.toString());
 
-                    audioContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
+                    try{
+                        audioContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        audioContent.setDate_added("unknown");
+                    }
 
-                    audioContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
+                    try{
+                        audioContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        audioContent.setDate_modified("unknown");
+                    }
 
                     long album_id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
                     Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
@@ -315,9 +345,19 @@ public class AudioGet {
                 Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
                 audioContent.setAssetFileStringUri(contentUri.toString());
 
-                audioContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
+                try{
+                    audioContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    audioContent.setDate_added("unknown");
+                }
 
-                audioContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
+                try{
+                    audioContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    audioContent.setDate_modified("unknown");
+                }
 
                 String album_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                 audioContent.setAlbum(album_name);
@@ -384,9 +424,19 @@ public class AudioGet {
                     Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
                     audioContent.setAssetFileStringUri(contentUri.toString());
 
-                    audioContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
+                    try{
+                        audioContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        audioContent.setDate_added("unknown");
+                    }
 
-                    audioContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
+                    try{
+                        audioContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        audioContent.setDate_modified("unknown");
+                    }
 
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                     audioContent.setFilePath(path);
@@ -439,9 +489,19 @@ public class AudioGet {
                     Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
                     audioContent.setAssetFileStringUri(contentUri.toString());
 
-                    audioContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
+                    try{
+                        audioContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        audioContent.setDate_added("unknown");
+                    }
 
-                    audioContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
+                    try{
+                        audioContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        audioContent.setDate_modified("unknown");
+                    }
 
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                     audioContent.setFilePath(path);
@@ -501,9 +561,19 @@ public class AudioGet {
                     Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
                     audioContent.setAssetFileStringUri(contentUri.toString());
 
-                    audioContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
+                    try{
+                        audioContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        audioContent.setDate_added("unknown");
+                    }
 
-                    audioContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
+                    try{
+                        audioContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        audioContent.setDate_modified("unknown");
+                    }
 
                     String album_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                     audioContent.setAlbum(album_name);
@@ -553,9 +623,19 @@ public class AudioGet {
                     Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
                     audioContent.setAssetFileStringUri(contentUri.toString());
 
-                    audioContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
+                    try{
+                        audioContent.setDate_added(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        audioContent.setDate_added("unknown");
+                    }
 
-                    audioContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
+                    try{
+                        audioContent.setDate_modified(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        audioContent.setDate_modified("unknown");
+                    }
 
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                     audioContent.setFilePath(path);

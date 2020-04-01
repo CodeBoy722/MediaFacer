@@ -8,6 +8,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="120dp"
         android:layout_height="120dp"
+        android:background="?attr/selectableItemBackground"
         android:layout_margin="1dp">
 
         <ImageView
@@ -20,13 +21,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@android:drawable/ic_media_play"
-            android:tint="@android:color/holo_orange_dark"
-            android:foreground="?attr/selectableItemBackground"
             android:background="?attr/selectableItemBackground"
-            tools:ignore="UnusedAttribute"
             android:clickable="true"
-            android:focusable="true"/>
+            android:focusable="true"
+            android:src="@drawable/ic_play"
+            android:tint="@color/design_default_color_background"
+            tools:ignore="UnusedAttribute" />
 
 
     </androidx.cardview.widget.CardView>

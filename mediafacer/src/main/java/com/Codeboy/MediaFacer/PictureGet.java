@@ -40,7 +40,7 @@ public class PictureGet {
                 MediaStore.Images.Media.SIZE, MediaStore.Images.Media.DATE_ADDED,MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DATE_MODIFIED};
         cursor = pictureContex.getContentResolver().query( contentLocation, projection, null, null,
-                "LOWER ("+MediaStore.Images.Media.DATE_ADDED+") ASC");
+                "LOWER ("+MediaStore.Images.Media.DATE_ADDED+") DESC");
 
         try {
             cursor.moveToFirst();
@@ -83,7 +83,7 @@ public class PictureGet {
                 MediaStore.Images.Media.SIZE,MediaStore.Images.Media.DATE_ADDED, MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DATE_MODIFIED};
         cursor = pictureContex.getContentResolver().query( externalContentUri, projection, MediaStore.Images.Media.DATA + " like ? ", new String[] {"%"+folderpath+"%"},
-                "LOWER ("+MediaStore.Images.Media.DATE_ADDED+") ASC");
+                "LOWER ("+MediaStore.Images.Media.DATE_ADDED+") DESC");
 
         try {
             cursor.moveToFirst();
@@ -120,12 +120,16 @@ public class PictureGet {
         return images;
     }
 
+    @Deprecated
     public ArrayList<pictureFolderContent> getPicturePaths(){
         ArrayList<pictureFolderContent> picFolders = new ArrayList<>();
         ArrayList<String> picPaths = new ArrayList<>();
-        @SuppressLint("InlinedApi") String[] projection = { MediaStore.Images.ImageColumns.DATA ,MediaStore.Images.Media.DISPLAY_NAME,
-                MediaStore.Images.Media.BUCKET_DISPLAY_NAME,MediaStore.Images.Media.DATE_ADDED};
-        cursor = pictureContex.getContentResolver().query(externalContentUri, projection, null, null, "LOWER ("+MediaStore.Images.Media.DATE_ADDED+") ASC");
+        @SuppressLint("InlinedApi") String[] projection = {
+                MediaStore.Images.ImageColumns.DATA,
+                MediaStore.Images.Media.DISPLAY_NAME,
+                MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
+                MediaStore.Images.Media.DATE_ADDED};
+        cursor = pictureContex.getContentResolver().query(externalContentUri, projection, null, null, "LOWER ("+MediaStore.Images.Media.DATE_ADDED+") DESC");
         try {
             cursor.moveToFirst();
             do{

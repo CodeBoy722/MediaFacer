@@ -5,8 +5,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,6 +23,8 @@ import com.Codeboy.MediaFacer.PictureGet;
 import com.Codeboy.MediaFacer.mediaHolders.pictureContent;
 import com.Codeboy.MediaFacer.mediaHolders.pictureFolderContent;
 import com.Codeboy.MediaFacer_Examples.adapters.imageRecycleAdapter;
+import com.Codeboy.MediaFacer_Examples.fragments.fragment_audioDataDisplay;
+import com.Codeboy.MediaFacer_Examples.fragments.fragment_picture_display;
 import com.Codeboy.MediaFacer_Examples.fragments.pictureInfo;
 
 import java.util.ArrayList;
@@ -51,7 +58,7 @@ public class pictureActivity extends AppCompatActivity {
             @Override
             public void onPictureItemClicked(int position) {
                 //show picture information
-                displayPictureInFragment(allPhotos.get(position),position);
+                displayPictureInFragment(allPhotos,position);
             }
 
             @Override
@@ -73,11 +80,26 @@ public class pictureActivity extends AppCompatActivity {
     private void showPictureInfo(pictureContent picture){
         pictureInfo pictureDetails = new pictureInfo();
         pictureDetails.setPicture(picture);
-        pictureDetails.show(getSupportFragmentManager(),"picture_info");
+        pictureDetails.show(getSupportFragmentManager(),"content_info");
     }
 
-    private void displayPictureInFragment(pictureContent picture, int position){
+    private void displayPictureInFragment(ArrayList<pictureContent> pictureList, int position){
+        fragment_picture_display picturePage = new fragment_picture_display();
+        picturePage.setAllpics(pictureList,position);
 
+        Transition transition = TransitionInflater.from(this).
+                inflateTransition(android.R.transition.explode);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            picturePage.setEnterTransition(new Slide(Gravity.TOP));
+            picturePage.setExitTransition(new Slide(Gravity.BOTTOM));
+        }
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.motherview,picturePage)
+                .addToBackStack(null)
+                .commit();
     }
 
     private void setUpFolderSelector(){

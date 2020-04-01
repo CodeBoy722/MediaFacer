@@ -18,6 +18,7 @@ import com.Codeboy.MediaFacer.VideoGet;
 import com.Codeboy.MediaFacer.mediaHolders.videoContent;
 import com.Codeboy.MediaFacer.mediaHolders.videoFolderContent;
 import com.Codeboy.MediaFacer_Examples.adapters.videoRecycleAdapter;
+import com.Codeboy.MediaFacer_Examples.fragments.videoInfo;
 
 import java.util.ArrayList;
 
@@ -97,13 +98,13 @@ public class videoActivity extends AppCompatActivity {
         videoRecycleAdapter.videoActionListener actionListener = new videoRecycleAdapter.videoActionListener() {
             @Override
             public void onVideoItemClicked(int position) {
-                //show picture information
+                //play video
                 playVideo(allVideos.get(position),position);
             }
 
             @Override
             public void onVideoItemLongClicked(int position) {
-                //show picture in fragment
+                //show video information
                 showVideoInfo(allVideos.get(position));
             }
         };
@@ -119,8 +120,9 @@ public class videoActivity extends AppCompatActivity {
     }
 
     private void showVideoInfo(videoContent video){
-
-
+        videoInfo videoDetails = new videoInfo();
+        videoDetails.setVideo(video);
+        videoDetails.show(getSupportFragmentManager(),"video_info");
     }
 
 }

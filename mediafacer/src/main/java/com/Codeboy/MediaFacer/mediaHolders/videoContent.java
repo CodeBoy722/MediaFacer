@@ -6,19 +6,19 @@ public class videoContent {
     private String videoName;
     private String path;
     private long videoDuration;
-    private String videoSize;
+    private long videoSize;
     private String AssetFileStringUri;
     private String album;
     private String artist;
-    private String date_added;
-    private String date_modified;
+    private long date_added;
+    private long date_modified;
 
 
     public videoContent(){
 
     }
 
-    public videoContent(long videoId, String videoName, String path, long videoDuration, String videoSize) {
+    public videoContent(long videoId, String videoName, String path, long videoDuration, long videoSize) {
         this.videoId = videoId;
         this.videoName = videoName;
         this.path = path;
@@ -59,11 +59,11 @@ public class videoContent {
         this.videoDuration = videoDuration;
     }
 
-    public String getVideoSize() {
+    public long getVideoSize() {
         return videoSize;
     }
 
-    public void setVideoSize(String videoSize) {
+    public void setVideoSize(long videoSize) {
         this.videoSize = videoSize;
     }
 
@@ -91,19 +91,19 @@ public class videoContent {
         this.artist = artist;
     }
 
-    public String getDate_added() {
+    public long getDate_added() {
         return date_added;
     }
 
-    public void setDate_added(String date_added) {
+    public void setDate_added(long date_added) {
         this.date_added = date_added;
     }
 
-    public String getDate_modified() {
+    public long getDate_modified() {
         return date_modified;
     }
 
-    public void setDate_modified(String date_modified) {
+    public void setDate_modified(long date_modified) {
         this.date_modified = date_modified;
     }
 }

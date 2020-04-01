@@ -79,6 +79,7 @@ public class videoRecycleAdapter extends RecyclerView.Adapter<videoRecycleAdapte
                     .load(video.getPath())
                     .apply(new RequestOptions().centerCrop())
                     .into(preview);
+            itemView.setOnClickListener(this);
         }
 
         @Override

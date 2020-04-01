@@ -54,7 +54,7 @@ public class audioFolderContent {
     }
 
     public int getNumberOfSongs() {
-        return numberOfSongs;
+        return audioFiles.size();
     }
 
     public void setNumberOfSongs(int numberOfSongs) {
