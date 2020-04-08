@@ -73,7 +73,7 @@ public class fragment_audioDataDisplay extends Fragment {
 
             @Override
             public void onMusicItemLongClicked(int position) {
-
+                showAudioInfo(position);
             }
         };
 
@@ -118,6 +118,12 @@ public class fragment_audioDataDisplay extends Fragment {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void showAudioInfo(int position){
+        audioInfo audio = new audioInfo();
+        audio.setAudio(files.get(position));
+        audio.show(getActivity().getSupportFragmentManager(),"audio_info");
     }
 
     @Override

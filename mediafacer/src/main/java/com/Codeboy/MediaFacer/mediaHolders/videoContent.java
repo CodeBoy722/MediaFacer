@@ -13,7 +13,6 @@ public class videoContent {
     private long date_added;
     private long date_modified;
 
-
     public videoContent(){
 
     }

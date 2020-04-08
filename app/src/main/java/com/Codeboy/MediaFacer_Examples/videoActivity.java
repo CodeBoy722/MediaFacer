@@ -1,11 +1,14 @@
 package com.Codeboy.MediaFacer_Examples;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +22,7 @@ import com.Codeboy.MediaFacer.mediaHolders.videoContent;
 import com.Codeboy.MediaFacer.mediaHolders.videoFolderContent;
 import com.Codeboy.MediaFacer_Examples.adapters.videoRecycleAdapter;
 import com.Codeboy.MediaFacer_Examples.fragments.videoInfo;
+import com.Codeboy.MediaFacer_Examples.fragments.videoPlayerFragment;
 
 import java.util.ArrayList;
 
@@ -99,7 +103,7 @@ public class videoActivity extends AppCompatActivity {
             @Override
             public void onVideoItemClicked(int position) {
                 //play video
-                playVideo(allVideos.get(position),position);
+                playVideo(position);
             }
 
             @Override
@@ -115,8 +119,21 @@ public class videoActivity extends AppCompatActivity {
     }
 
 
-    private void playVideo(videoContent video,int position){
+    private void playVideo(int position){
 
+        videoPlayerFragment playerFragment = new videoPlayerFragment();
+        playerFragment.setVideosData(allVideos,position);
+
+        Transition transition = TransitionInflater.from(this).
+                inflateTransition(android.R.transition.explode);
+
+        playerFragment.setEnterTransition(transition);
+        playerFragment.setExitTransition(transition);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.play_holder,playerFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     private void showVideoInfo(videoContent video){

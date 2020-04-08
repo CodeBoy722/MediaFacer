@@ -1,6 +1,5 @@
 package com.Codeboy.MediaFacer_Examples.fragments;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +13,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.Codeboy.MediaFacer.mediaDataCalculator;
-import com.Codeboy.MediaFacer.mediaHolders.videoContent;
+import com.Codeboy.MediaFacer.mediaHolders.audioContent;
 import com.Codeboy.MediaFacer_Examples.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.Date;
 
-public class videoInfo extends DialogFragment {
+public class audioInfo extends DialogFragment {
 
-    private videoContent video;
+    private audioContent audio;
 
     @Nullable
     @Override
@@ -43,24 +42,24 @@ public class videoInfo extends DialogFragment {
         TextView last_modified = view.findViewById(R.id.last_modified);
         ImageView pictureView = view.findViewById(R.id.pic);
 
-        filename.setText(video.getVideoName());
-        filepath.setText(video.getPath());
-        size.setText(mediaDataCalculator.convertBytes(video.getVideoSize()));
+        filename.setText(audio.getName());
+        filepath.setText(audio.getFilePath());
+        size.setText(mediaDataCalculator.convertBytes(audio.getMusicSize()));
 
-        Date da = new Date(video.getDate_added());
-        Date dm = new Date(video.getDate_modified());
+        Date da = new Date(audio.getDate_added());
+        Date dm = new Date(audio.getDate_modified());
 
         date_added.setText(da.toString());
         last_modified.setText(dm.toString());
 
         Glide.with(getActivity())
-                .load(Uri.parse(video.getAssetFileStringUri()))
-                .apply(new RequestOptions().placeholder(R.drawable.tile_logo).centerCrop())
+                .load(audio.getArt_uri())
+                .apply(new RequestOptions().placeholder(R.drawable.music_placeholder).centerCrop())
                 .into(pictureView);
     }
 
-    public void setVideo(videoContent video){
-        this.video = video;
+    public void setAudio(audioContent audio){
+        this.audio = audio;
     }
 
 }

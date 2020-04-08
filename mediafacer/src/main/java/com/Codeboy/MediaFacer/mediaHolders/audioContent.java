@@ -15,8 +15,8 @@ public class audioContent {
     private long Duration;
     private long musicID;
     private String AssetFileStringUri;
-    private String date_added;
-    private String date_modified;
+    private long date_added;
+    private long date_modified;
 
     public audioContent(){
 
@@ -102,19 +102,19 @@ public class audioContent {
         AssetFileStringUri = assetFileStringUri;
     }
 
-    public String getDate_added() {
+    public long getDate_added() {
         return date_added;
     }
 
-    public void setDate_added(String date_added) {
+    public void setDate_added(long date_added) {
         this.date_added = date_added;
     }
 
-    public String getDate_modified() {
+    public long getDate_modified() {
         return date_modified;
     }
 
-    public void setDate_modified(String date_modified) {
+    public void setDate_modified(long date_modified) {
         this.date_modified = date_modified;
     }
 }

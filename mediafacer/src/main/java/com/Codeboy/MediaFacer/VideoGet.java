@@ -25,13 +25,12 @@ public class VideoGet {
         videoContex = contx.getApplicationContext();
     }
 
-    public static VideoGet getInstance(Context contx){
+    static VideoGet getInstance(Context contx){
         if(videoGet == null){
             videoGet = new VideoGet(contx);
         }
         return videoGet;
     }
-
 
     @SuppressLint("InlinedApi")
     public ArrayList<videoContent> getAllVideoContent(Uri contentLocation) {
@@ -53,7 +52,7 @@ public class VideoGet {
 
                 videoContent.setVideoSize(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)));
 
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID))  ;
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID));
                 videoContent.setVideoId(id);
 
                 Uri contentUri = Uri.withAppendedPath(contentLocation, String.valueOf(id));
@@ -126,9 +125,6 @@ public class VideoGet {
             do{
                 videoContent videoContent = new videoContent();
 
-                int id = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID);
-                videoContent.setVideoId(id);
-
                 videoContent.setVideoName(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)));
 
                 videoContent.setPath(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)));
@@ -136,6 +132,9 @@ public class VideoGet {
                 videoContent.setVideoDuration(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)));
 
                 videoContent.setVideoSize(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)));
+
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID));
+                videoContent.setVideoId(id);
 
                 Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
                 videoContent.setAssetFileStringUri(contentUri.toString());
@@ -151,11 +150,6 @@ public class VideoGet {
                 videoContents.add(videoContent);
             }while(cursor.moveToNext());
             cursor.close();
-            ArrayList<videoContent> reSelection = new ArrayList<>();
-            for(int i = videoContents.size()-1;i > -1;i--){
-                reSelection.add(videoContents.get(i));
-            }
-            videoContents = reSelection;
         } catch (Exception e) {
             e.printStackTrace();
         }

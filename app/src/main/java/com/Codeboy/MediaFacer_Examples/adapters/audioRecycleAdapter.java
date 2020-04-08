@@ -56,7 +56,7 @@ public class audioRecycleAdapter extends RecyclerView.Adapter<audioRecycleAdapte
         void onMusicItemLongClicked(int position);
     }
 
-    class musicViewHolder extends RecyclerView.ViewHolder {
+    class musicViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
          //define views
         ImageView art;
         TextView title;
@@ -96,26 +96,32 @@ public class audioRecycleAdapter extends RecyclerView.Adapter<audioRecycleAdapte
                     .apply(new RequestOptions().placeholder(R.drawable.tile_logo).centerCrop()).circleCrop()
                     .into(art);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    actionListerner.onMusicItemClicked(itemPosition,musiclist.get(itemPosition));
-                    playing = true;
-                    if(playPosition != itemPosition){
-                        playView.setVisibility(View.GONE);
-                        playPosition = itemPosition;
-                        playView = play;
-                        playView.setVisibility(View.VISIBLE);
-                    }else {
-                        playPosition = itemPosition;
-                        playView = play;
-                        playView.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
 
         }
 
+        @Override
+        public void onClick(View v) {
+            actionListerner.onMusicItemClicked(itemPosition,musiclist.get(itemPosition));
+            playing = true;
+            if(playPosition != itemPosition){
+                playView.setVisibility(View.GONE);
+                playPosition = itemPosition;
+                playView = play;
+                playView.setVisibility(View.VISIBLE);
+            }else {
+                playPosition = itemPosition;
+                playView = play;
+                playView.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+             actionListerner.onMusicItemLongClicked(itemPosition);
+            return false;
+        }
     }
 
 }

@@ -102,6 +102,12 @@ public class fragmentAudioContents extends Fragment {
         }
     }
 
+    private void showAudioInfo(int position){
+        audioInfo audio = new audioInfo();
+        audio.setAudio(audioContents.get(position));
+        audio.show(getActivity().getSupportFragmentManager(),"audio_info");
+    }
+
     private class getAudioTask extends AsyncTask<Object,Integer, ArrayList<audioContent>>{
 
         @Override
@@ -127,7 +133,7 @@ public class fragmentAudioContents extends Fragment {
 
                 @Override
                 public void onMusicItemLongClicked(int position) {
-
+                    showAudioInfo(position);
                 }
             };
             audioRecycleAdapter allaudio = new audioRecycleAdapter(getActivity(),audioContents,listerner);
