@@ -83,12 +83,14 @@
 
             <SeekBar
                 android:id="@+id/seeker"
+                style="@style/Widget.AppCompat.SeekBar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:progressTint="@android:color/white"
+                android:background="@color/colorAccent"
+                android:progressTint="@android:color/holo_blue_dark"
                 android:thumbTint="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

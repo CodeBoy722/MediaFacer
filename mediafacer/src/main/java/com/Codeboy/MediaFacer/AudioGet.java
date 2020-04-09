@@ -34,6 +34,7 @@ public class AudioGet {
         return audioGet;
     }
 
+    /**Returns an Arraylist of {@link audioContent} */
     public ArrayList<audioContent> getAllAudioContent(Uri contentLocation) {
         ArrayList<audioContent> allAudioContent = new ArrayList<>();
         String selection = android.provider.MediaStore.Audio.Media.IS_MUSIC + " != 0";
@@ -114,6 +115,7 @@ public class AudioGet {
         return allAudioContent;
     }
 
+    /**Returns an ArrayList of {@link audioAlbumContent} */
     public ArrayList<audioAlbumContent> getAllAlbums(Uri contentLocation) {
         ArrayList<audioAlbumContent> audioAlbumContents = new ArrayList<>();
         String selection = android.provider.MediaStore.Audio.Media.IS_MUSIC + " != 0";
@@ -195,6 +197,7 @@ public class AudioGet {
         return audioAlbumContents;
     }
 
+    /**Returns an ArrayList of String representing artist ids in the {@link MediaStore} */
     private ArrayList<audioAlbumContent> getAllAlbumsByArtistId(String artist_id, Uri contentLocation) {
         ArrayList<audioAlbumContent> AllAlbums = new ArrayList<>();
         @SuppressLint("InlinedApi") String[] projection = {MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.ALBUM,MediaStore.Audio.Media.TITLE,

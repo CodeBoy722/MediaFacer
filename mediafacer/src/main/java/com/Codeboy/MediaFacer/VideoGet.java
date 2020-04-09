@@ -7,9 +7,6 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import com.Codeboy.MediaFacer.mediaHolders.videoContent;
 import com.Codeboy.MediaFacer.mediaHolders.videoFolderContent;
-
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 public class VideoGet {
 
@@ -32,6 +29,7 @@ public class VideoGet {
         return videoGet;
     }
 
+    /**Returns an Arraylist of {@link videoContent}  */
     @SuppressLint("InlinedApi")
     public ArrayList<videoContent> getAllVideoContent(Uri contentLocation) {
         ArrayList<videoContent> allVideo = new ArrayList<>();
@@ -62,9 +60,19 @@ public class VideoGet {
 
                 videoContent.setArtist(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.ARTIST)));
 
-                videoContent.setDate_added(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)));
+                try{
+                    videoContent.setDate_added(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    videoContent.setDate_added(0000);
+                }
 
-                videoContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED)));
+                try{
+                    videoContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    videoContent.setDate_added(0000);
+                }
 
                 allVideo.add(videoContent);
             }while(cursor.moveToNext());
@@ -76,7 +84,7 @@ public class VideoGet {
         return allVideo;
     }
 
-
+    /**Returns an Arraylist of {@link videoFolderContent}  */
     public ArrayList<videoFolderContent> getVidioPaths(Uri contentLocation){
         ArrayList<videoFolderContent> allVideoFolders = new ArrayList<>();
         ArrayList<String> videoPaths = new ArrayList<>();
@@ -111,7 +119,7 @@ public class VideoGet {
         return allVideoFolders;
     }
 
-
+    /**Returns an Arraylist of {@link videoContent} in a specific folder  */
     @SuppressLint("InlinedApi")
     public ArrayList<videoContent> getAllVideoContentInFolder(String folderPath){
         ArrayList<videoContent> videoContents = new ArrayList<>();
@@ -143,9 +151,19 @@ public class VideoGet {
 
                 videoContent.setArtist(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.ARTIST)));
 
-                videoContent.setDate_added(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)));
+                try{
+                    videoContent.setDate_added(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    videoContent.setDate_added(0000);
+                }
 
-                videoContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED)));
+                try{
+                    videoContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    videoContent.setDate_added(0000);
+                }
 
                 videoContents.add(videoContent);
             }while(cursor.moveToNext());

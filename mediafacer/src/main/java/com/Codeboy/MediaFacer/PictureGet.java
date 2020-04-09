@@ -33,7 +33,7 @@ public class PictureGet {
         return pictureGet;
     }
 
-
+    /**Returns an ArrayList of {@link pictureContent}  */
     public ArrayList<pictureContent> getAllPictureContents(Uri contentLocation){
         ArrayList<pictureContent> images = new ArrayList<>();
         String[] projection = { MediaStore.Images.Media.DATA ,MediaStore.Images.Media.DISPLAY_NAME,
@@ -59,24 +59,30 @@ public class PictureGet {
                 Uri contentUri = Uri.withAppendedPath(contentLocation, String.valueOf(id));
                 pictureContent.setAssertFileStringUri(contentUri.toString());
 
-                pictureContent.setDate_added(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)));
+                try{
+                    pictureContent.setDate_added(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    pictureContent.setDate_added(0000);
+                }
 
-                pictureContent.setDate_modified(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)));
+                try{
+                    pictureContent.setDate_modified(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    pictureContent.setDate_added(0000);
+                }
 
                 images.add(pictureContent);
             }while(cursor.moveToNext());
             cursor.close();
-           /* ArrayList<pictureContent> reSelection = new ArrayList<>();
-            for(int i = images.size()-1;i > 0;i--){
-                reSelection.add(images.get(i));
-            }
-            images  = reSelection;*/
         } catch (Exception e) {
             e.printStackTrace();
         }
         return images;
     }
 
+    /**Returns an ArrayList of {@link pictureContent} in a specific folder*/
     public ArrayList<pictureContent> getAllPictureContentInFolder(String folderpath){
         ArrayList<pictureContent> images = new ArrayList<>();
         String[] projection = { MediaStore.Images.Media.DATA ,MediaStore.Images.Media.DISPLAY_NAME,
@@ -102,10 +108,19 @@ public class PictureGet {
                 Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
                 pictureContent.setAssertFileStringUri(contentUri.toString());
 
-                pictureContent.setDate_added(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)));
+                try{
+                    pictureContent.setDate_added(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    pictureContent.setDate_added(0000);
+                }
 
-                pictureContent.setDate_modified(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)));
-
+                try{
+                    pictureContent.setDate_modified(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    pictureContent.setDate_added(0000);
+                }
                 images.add(pictureContent);
             }while(cursor.moveToNext());
             cursor.close();
@@ -120,7 +135,7 @@ public class PictureGet {
         return images;
     }
 
-    @Deprecated
+    /**Returns an ArrayList of {@link pictureFolderContent}  */
     public ArrayList<pictureFolderContent> getPicturePaths(){
         ArrayList<pictureFolderContent> picFolders = new ArrayList<>();
         ArrayList<String> picPaths = new ArrayList<>();
