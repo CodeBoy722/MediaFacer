@@ -6,6 +6,10 @@ An android library for the structured querying of the MediaStore to  get media f
 [![](https://jitpack.io/v/CodeBoy722/MediaFacer.svg)](https://jitpack.io/#CodeBoy722/MediaFacer)
 
 # Download
+You can download a jar from GitHub's releases page.
+
+Or use Gradle:
+Add it in your your projects root build.gradle file 
 
     allprojects {
 		repositories {
