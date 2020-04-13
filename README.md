@@ -28,7 +28,7 @@ dependencies {
 	}
 ```
 	
-#Usage 
+# Usage 
 The MediaFacer library already contains a set of classes for holding audio,video and image file data and each time a query is executed to get media files, the results always come in anyone of these classes.
 
 **videoContent** :this class holds data for a specific video file.
@@ -77,7 +77,7 @@ try {
 }
 ```
 
-get all audio files with similar album
+get all audio files with similar albums
 
 ```java
 ArrayList<audioAlbumContent>  allAlbums;
@@ -86,7 +86,7 @@ ArrayList<audioAlbumContent>  allAlbums;
                 .getAllAlbums(AudioGet.externalContentUri);
 ```
 
-get all audio files with similar artist 
+get all audio files with similar artists 
 
 ```java
 ArrayList<audioArtistContent> allArtists;
@@ -100,7 +100,7 @@ ArrayList<audioArtistContent> allArtists;
                  .getAllArtists(ids,AudioGet.externalContentUri);
 ```
 
-get all audio files in same folder
+get all audio files in same folders
 
 ```java
  ArrayList<audioFolderContent> buckets;
