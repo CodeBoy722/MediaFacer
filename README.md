@@ -47,7 +47,7 @@ The MediaFacer library already contains a set of classes for holding audio,video
 
 **videoFolderContent** : this class holds all video files found in the same folder on the storage mediums.  
 
-##Getting audio files from the MediaStore
+## Getting audio files from the MediaStore
 
 get all audio files
 
@@ -110,20 +110,78 @@ get all audio files in same folders
 
 ```
    
+## Getting images from the MediaStore
 
+get all images in the MediaStore.
 
+```java
+ArrayList<pictureContent> allPhotos;
 
+  allPhotos = MediaFacer
+              .withPictureContex(mContext)
+              .getAllPictureContents(PictureGet.externalContentUri);
+```
 
+loading and displaying images from pictureContent class,
+ you can use [Glide](https://github.com/bumptech/glide) for this
 
+```java
+ImageView picture = findViewById(R.id.picture);
+Glide.with(mContext)
+                    .load(Uri.parse(pictureContent.getAssertFileStringUri()))
+                    .apply(new RequestOptions().centerCrop())
+                    .into(picture);
+```
 
+get all folders containing pictures
 
+```java
+ArrayList<pictureFolderContent> pictureFolders = new ArrayList<>();
+      
+      pictureFolders.addAll(MediaFacer.withPictureContex(mContext).getPicturePaths());
+	
+//now load images for the first pictureFolderContent object
+	pictureFolders.get(0)
+	.setPhotos(MediaFacer
+	.withPictureContex(mContext)
+	.getAllPictureContentInFolder(pictureFolders.get(0)));	
+```
 
+## Getting Videos from the MediaStore
 
+get all videos in the MediaStore.
 
+```java
+ArrayList<videoContent> allVideos;
+ allVideos = MediaFacer
+             .withVideoContex(mContext)
+             .getAllVideoContent(VideoGet.externalContentUri);
+```
 
+loading video into VideoView from videoContent class
 
+```java
+VideoView playZone findViewById(R.id.vid_zone);
+SeekBar seeker = findViewById(R.id.seeker);
 
+ playZone.setVideoURI(Uri.parse(videoContent.getAssetFileStringUri()));
+        playZone.requestFocus();
+        seeker.setMax((int) videos.get(position).getVideoDuration());
+        playZone.start();
+```
 
+get all folders containing videos
+
+```java
+ ArrayList<videoFolderContent> videoFolders = new ArrayList<>();
+      
+     videoFolders.addAll(MediaFacer.withVideoContex(mContext).getVidioPaths(VideoGet.externalContentUri));
+	
+//now load videos for the first videoFolderContent object
+	videoFolders.get(0)
+	.setVideoFiles(MediaFacer.withVideoContex(mContext)
+	.getAllVideoContentInFolder(videoFolders.get(0)));
+```
 
 
 
