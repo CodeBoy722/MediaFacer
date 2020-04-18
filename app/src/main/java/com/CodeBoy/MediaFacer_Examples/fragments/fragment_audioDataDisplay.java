@@ -88,7 +88,6 @@ public class fragment_audioDataDisplay extends Fragment {
             player = new MediaPlayer();
             try {
                 AssetFileDescriptor file = getActivity().getContentResolver().openAssetFileDescriptor(content, "r");
-                assert file != null;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     player.setDataSource(file);
                 }else {
