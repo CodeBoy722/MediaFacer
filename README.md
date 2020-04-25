@@ -26,7 +26,7 @@ Add the dependency in the app level build.gradle file
 
 ```gradle
 dependencies {
-	   implementation 'com.github.CodeBoy722:MediaFacer:1.0.1'
+	   implementation 'com.github.CodeBoy722:MediaFacer:1.0.2'
 	}
 ```
 	
@@ -140,13 +140,13 @@ get all folders containing pictures
 ```java
 ArrayList<pictureFolderContent> pictureFolders = new ArrayList<>();
       
-      pictureFolders.addAll(MediaFacer.withPictureContex(mContext).getPicturePaths());
+      pictureFolders.addAll(MediaFacer.withPictureContex(mContext).getPictureFolders());
 	
 //now load images for the first pictureFolderContent object
 	pictureFolders.get(0)
 	.setPhotos(MediaFacer
 	.withPictureContex(mContext)
-	.getAllPictureContentInFolder(pictureFolders.get(0)));	
+	.getAllPictureContentByBucket_id(pictureFolders.get(0).getBucket_id());	
 ```
 
 ## Getting Videos from the MediaStore
@@ -177,12 +177,12 @@ get all folders containing videos
 ```java
  ArrayList<videoFolderContent> videoFolders = new ArrayList<>();
       
-     videoFolders.addAll(MediaFacer.withVideoContex(mContext).getVidioPaths(VideoGet.externalContentUri));
+     videoFolders.addAll(MediaFacer.withVideoContex(mContext).getVideoFolders(VideoGet.externalContentUri));
 	
 //now load videos for the first videoFolderContent object
 	videoFolders.get(0)
 	.setVideoFiles(MediaFacer.withVideoContex(mContext)
-	.getAllVideoContentInFolder(videoFolders.get(0)));
+	.getAllVideoContentByBucket_id(videoFolders.get(0).getBucket_id());
 ```
 
 
