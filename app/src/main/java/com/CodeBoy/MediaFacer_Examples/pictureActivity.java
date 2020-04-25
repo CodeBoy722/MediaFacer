@@ -105,8 +105,8 @@ public class pictureActivity extends AppCompatActivity {
         folderSelector = findViewById(R.id.folder_selector);
 
         final ArrayList<pictureFolderContent> pictureFolders = new ArrayList<>();
-        pictureFolders.add(new pictureFolderContent("all","*All*",null));
-        pictureFolders.addAll(MediaFacer.withPictureContex(this).getPicturePaths());
+        pictureFolders.add(new pictureFolderContent("all","*All*"));
+        pictureFolders.addAll(MediaFacer.withPictureContex(this).getPictureFolders());
 
         final ArrayList<String> folders = new ArrayList<>();
         for(int i = 0;i < pictureFolders.size();i++){
@@ -128,7 +128,7 @@ public class pictureActivity extends AppCompatActivity {
                 }else {
                     allPhotos = MediaFacer
                             .withPictureContex(pictureActivity.this)
-                            .getAllPictureContentInFolder(pictureFolders.get(position).getPath());
+                            .getAllPictureContentByBucket_id(pictureFolders.get(position).getBucket_id());
                     Toast.makeText(pictureActivity.this,String.valueOf(allPhotos.size()),Toast.LENGTH_LONG).show();
                     setUpAndDisplayPictures();
                 }

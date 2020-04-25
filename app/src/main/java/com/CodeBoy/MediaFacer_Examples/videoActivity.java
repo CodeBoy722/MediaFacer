@@ -61,7 +61,7 @@ public class videoActivity extends AppCompatActivity {
 
         final ArrayList<videoFolderContent> videoFolders = new ArrayList<>();
         videoFolders.add(new videoFolderContent("all","*All*"));
-        videoFolders.addAll(MediaFacer.withVideoContex(this).getVidioPaths(VideoGet.externalContentUri));
+        videoFolders.addAll(MediaFacer.withVideoContex(this).getVideoFolders(VideoGet.externalContentUri));
 
         final ArrayList<String> folders = new ArrayList<>();
         for(int i = 0;i < videoFolders.size();i++){
@@ -83,7 +83,7 @@ public class videoActivity extends AppCompatActivity {
                 }else {
                     allVideos = MediaFacer
                             .withVideoContex(videoActivity.this)
-                            .getAllVideoContentInFolder(videoFolders.get(position).getFolderPath());
+                            .getAllVideoContentByBucket_id(videoFolders.get(position).getBucket_id());
                     Toast.makeText(videoActivity.this,String.valueOf(allVideos.size()),Toast.LENGTH_LONG).show();
                     setuUpAndDisplayVideos();
                 }

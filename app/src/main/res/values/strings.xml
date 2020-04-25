@@ -16,4 +16,6 @@
     <string name="folders">Folders</string>
     <string name="title">Title</string>
     <string name="artist">artist</string>
+    <string name="counter">counter</string>
+    <string name="duration">duration</string>
 </resources>

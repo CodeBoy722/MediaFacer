@@ -6,19 +6,19 @@ import java.util.ArrayList;
 
 public class videoFolderContent {
 
-    private ArrayList<videoContent> videoFiles = new ArrayList<>();
+    private ArrayList<videoContent> videoFiles;
     private String folderName;
     private String folderPath;
-    private Uri folderCover;
-    private int numberOfSongs;
+    private int bucket_id;
 
     public videoFolderContent(){
-
+        videoFiles = new ArrayList<>();
     }
 
     public videoFolderContent(String folderPath,String folderName) {
         this.folderName = folderName;
         this.folderPath = folderPath;
+        videoFiles = new ArrayList<>();
     }
 
 
@@ -46,19 +46,11 @@ public class videoFolderContent {
         this.folderPath = folderPath;
     }
 
-    public Uri getFolderCover() {
-        return folderCover;
+    public int getBucket_id() {
+        return bucket_id;
     }
 
-    public void setFolderCover(Uri folderCover) {
-        this.folderCover = folderCover;
-    }
-
-    public int getNumberOfSongs() {
-        return numberOfSongs;
-    }
-
-    public void setNumberOfSongs(int numberOfSongs) {
-        this.numberOfSongs = numberOfSongs;
+    public void setBucket_id(int bucket_id) {
+        this.bucket_id = bucket_id;
     }
 }

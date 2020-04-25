@@ -6,19 +6,19 @@ import java.util.ArrayList;
 
 public class audioFolderContent {
 
-    private ArrayList<audioContent> audioFiles = new ArrayList<>();
+    private ArrayList<audioContent> audioFiles;
     private String folderName;
     private String folderPath;
-    private Uri folderCover;
-    private int numberOfSongs;
+    private int bucket_id;
 
     public audioFolderContent(){
-
+        audioFiles = new ArrayList<>();
     }
 
     public audioFolderContent(String folderName, String folderPath) {
         this.folderName = folderName;
         this.folderPath = folderPath;
+        audioFiles = new ArrayList<>();
     }
 
     public ArrayList<audioContent> getMusicFiles() {
@@ -45,19 +45,15 @@ public class audioFolderContent {
         this.folderPath = folderPath;
     }
 
-    public Uri getFolderCover() {
-        return folderCover;
-    }
-
-    public void setFolderCover(Uri folderCover) {
-        this.folderCover = folderCover;
-    }
-
     public int getNumberOfSongs() {
         return audioFiles.size();
     }
 
-    public void setNumberOfSongs(int numberOfSongs) {
-        this.numberOfSongs = numberOfSongs;
+    public int getBucket_id() {
+        return bucket_id;
+    }
+
+    public void setBucket_id(int bucket_id) {
+        this.bucket_id = bucket_id;
     }
 }

@@ -4,26 +4,27 @@ import java.util.ArrayList;
 
 public class pictureFolderContent {
 
-    private String path;
+    private String folderpath;
     private String folderName;
     private ArrayList<pictureContent> photos;
+    private int bucket_id;
 
     public pictureFolderContent(){
-
+        photos = new ArrayList<>();
     }
 
-    public pictureFolderContent(String path, String folderName, ArrayList<pictureContent> pics) {
-        this.path = path;
+    public pictureFolderContent(String path, String folderName) {
+        this.folderpath = path;
         this.folderName = folderName;
-        this.photos = pics;
+        photos = new ArrayList<>();
     }
 
-    public String getPath() {
-        return path;
+    public String getFolderPath() {
+        return folderpath;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setFolderPath(String path) {
+        this.folderpath = path;
     }
 
     public String getFolderName() {
@@ -42,4 +43,11 @@ public class pictureFolderContent {
         this.photos = photos;
     }
 
+    public int getBucket_id() {
+        return bucket_id;
+    }
+
+    public void setBucket_id(int bucket_id) {
+        this.bucket_id = bucket_id;
+    }
 }

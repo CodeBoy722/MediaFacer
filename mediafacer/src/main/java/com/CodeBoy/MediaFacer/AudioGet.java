@@ -314,15 +314,15 @@ public class AudioGet {
         return audioArtistContents;
     }
 
+    /** Returns and ArrayList of {@link audioFolderContent} from the android MediaStore */
     public ArrayList<audioFolderContent> getAllAudioFolderContent(){
         ArrayList<audioFolderContent> musicFolders = new ArrayList<>();
-        ArrayList<String> picPaths = new ArrayList<>();
         Uri allsongsuri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String selection = android.provider.MediaStore.Audio.Media.IS_MUSIC + " != 0";
-        @SuppressLint("InlinedApi") String[] projection = {MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.ALBUM,MediaStore.Audio.Media.TITLE,
-                MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.ARTIST,MediaStore.Audio.Media.DISPLAY_NAME,MediaStore.Audio.Media._ID,MediaStore.Audio.Media.ARTIST_ID};
-        cursor = audioContex.getContentResolver().query(allsongsuri, projection, selection, null, "LOWER ("+MediaStore.Audio.Media.DATA + ") ASC");
-        ArrayList<String> folders = new ArrayList<>();
+        String[] projection = {MediaStore.Audio.Media.DATA,MediaStore.Audio.Media.TITLE,MediaStore.Audio.Media.BUCKET_ID,MediaStore.Audio.Media.ALBUM_ID,MediaStore.Audio.Media.ALBUM,
+                MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.DURATION,MediaStore.Audio.Media.DISPLAY_NAME,MediaStore.Audio.Media._ID};
+        cursor = audioContex.getContentResolver().query(allsongsuri, projection, selection, null, "LOWER ("+MediaStore.Audio.Media.TITLE + ") ASC");
+        ArrayList<Integer> folders = new ArrayList<>();
         try {
             if (cursor != null) {
                 cursor.moveToFirst();
@@ -335,7 +335,11 @@ public class AudioGet {
                 File parent = new File(path.getParent()) ;
                 String parentName = parent.getName();
                 String parentPath = parent.getAbsolutePath();
-                audioContent.setMusicSize(path.length());
+
+                int duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
+                audioContent.setMusicSize(duration);
+
+                int bucket_id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.BUCKET_ID));
 
                 String song_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
                 audioContent.setName(song_name);
@@ -381,12 +385,13 @@ public class AudioGet {
                 String artist_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                 audioContent.setArtist(artist_name);
 
-                if (!folders.contains(parentName)) {
-                    folders.add(parentName);
+                if (!folders.contains(bucket_id)) {
+                    folders.add(bucket_id);
+
+                    audioFolder.setBucket_id(bucket_id);
                     audioFolder.setFolderName(parentName);
                     audioFolder.setFolderPath(parentPath);
                     audioFolder.getMusicFiles().add(audioContent);
-                    audioFolder.setFolderCover(imageUri);
                     musicFolders.add(audioFolder);
                 }else{
                     for(int i = 0;i<musicFolders.size();i++){

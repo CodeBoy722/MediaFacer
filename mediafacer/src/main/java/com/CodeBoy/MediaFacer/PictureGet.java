@@ -26,7 +26,7 @@ public class PictureGet {
         pictureContex = contx.getApplicationContext();
     }
 
-    public static PictureGet getInstance(Context contx){
+    static PictureGet getInstance(Context contx){
         if(pictureGet == null){
             pictureGet = new PictureGet(contx);
         }
@@ -40,7 +40,7 @@ public class PictureGet {
                 MediaStore.Images.Media.SIZE, MediaStore.Images.Media.DATE_ADDED,MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DATE_MODIFIED};
         cursor = pictureContex.getContentResolver().query( contentLocation, projection, null, null,
-                "LOWER ("+MediaStore.Images.Media.DATE_ADDED+") DESC");
+                "LOWER ("+MediaStore.Images.Media.DATE_TAKEN+") DESC");
 
         try {
             cursor.moveToFirst();
@@ -82,14 +82,58 @@ public class PictureGet {
         return images;
     }
 
+    /**Returns an ArrayList of {@link pictureFolderContent}  */
+    public ArrayList<pictureFolderContent> getPictureFolders(){
+        ArrayList<pictureFolderContent> picFolders = new ArrayList<>();
+        ArrayList<Integer> picPaths = new ArrayList<>();
+        @SuppressLint("InlinedApi") String[] projection = {
+                MediaStore.Images.ImageColumns.DATA,
+                MediaStore.Images.Media.DISPLAY_NAME,
+                MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
+                MediaStore.Images.Media.BUCKET_ID,
+                MediaStore.Images.Media.DATE_ADDED};
+        cursor = pictureContex.getContentResolver().query(externalContentUri, projection, null, null, "LOWER ("+MediaStore.Images.Media.DATE_TAKEN+") DESC");
+        try {
+            cursor.moveToFirst();
+            do{
+                pictureFolderContent photoFolder = new pictureFolderContent();
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME));
+                String folder = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME));
+                String datapath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+
+                //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                int bucket_id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_ID));
+                //}else {}
+
+                String folderpaths = datapath.substring(0, datapath.lastIndexOf(folder+"/"));
+                folderpaths = folderpaths+folder+"/";
+                if (!picPaths.contains(bucket_id)) {
+                    picPaths.add(bucket_id);
+
+                    photoFolder.setBucket_id(bucket_id);
+                    photoFolder.setFolderPath(folderpaths);
+                    photoFolder.setFolderName(folder);
+                    picFolders.add(photoFolder);
+                }
+            }while(cursor.moveToNext());
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for(int i = 0;i < picFolders.size();i++){
+            Log.d("picture folders",picFolders.get(i).getFolderName()+" and path = "+picFolders.get(i).getFolderPath());
+        }
+        return picFolders;
+    }
+
     /**Returns an ArrayList of {@link pictureContent} in a specific folder*/
-    public ArrayList<pictureContent> getAllPictureContentInFolder(String folderpath){
+    public ArrayList<pictureContent> getAllPictureContentByBucket_id(int bucket_id){
         ArrayList<pictureContent> images = new ArrayList<>();
-        String[] projection = { MediaStore.Images.Media.DATA ,MediaStore.Images.Media.DISPLAY_NAME,
+        String[] projection = { MediaStore.Images.Media.DATA ,MediaStore.Images.Media.DISPLAY_NAME,MediaStore.Images.Media.BUCKET_ID,
                 MediaStore.Images.Media.SIZE,MediaStore.Images.Media.DATE_ADDED, MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DATE_MODIFIED};
-        cursor = pictureContex.getContentResolver().query( externalContentUri, projection, MediaStore.Images.Media.DATA + " like ? ", new String[] {"%"+folderpath+"%"},
-                "LOWER ("+MediaStore.Images.Media.DATE_ADDED+") DESC");
+        cursor = pictureContex.getContentResolver().query( externalContentUri, projection, MediaStore.Images.Media.BUCKET_ID + " like ? ", new String[] {"%"+bucket_id+"%"},
+                "LOWER ("+MediaStore.Images.Media.DATE_TAKEN+") DESC");
 
         try {
             cursor.moveToFirst();
@@ -134,44 +178,5 @@ public class PictureGet {
         }
         return images;
     }
-
-    /**Returns an ArrayList of {@link pictureFolderContent}  */
-    public ArrayList<pictureFolderContent> getPicturePaths(){
-        ArrayList<pictureFolderContent> picFolders = new ArrayList<>();
-        ArrayList<String> picPaths = new ArrayList<>();
-        @SuppressLint("InlinedApi") String[] projection = {
-                MediaStore.Images.ImageColumns.DATA,
-                MediaStore.Images.Media.DISPLAY_NAME,
-                MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
-                MediaStore.Images.Media.DATE_ADDED};
-        cursor = pictureContex.getContentResolver().query(externalContentUri, projection, null, null, "LOWER ("+MediaStore.Images.Media.DATE_ADDED+") DESC");
-        try {
-            cursor.moveToFirst();
-            do{
-                pictureFolderContent folds = new pictureFolderContent();
-                String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME));
-                @SuppressLint("InlinedApi") String folder = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME));
-                String datapath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
-
-                String folderpaths = datapath.substring(0, datapath.lastIndexOf(folder+"/"));
-                folderpaths = folderpaths+folder+"/";
-                if (!picPaths.contains(folderpaths)) {
-                    picPaths.add(folderpaths);
-
-                    folds.setPath(folderpaths);
-                    folds.setFolderName(folder);
-                    picFolders.add(folds);
-                }
-            }while(cursor.moveToNext());
-            cursor.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        for(int i = 0;i < picFolders.size();i++){
-            Log.d("picture folders",picFolders.get(i).getFolderName()+" and path = "+picFolders.get(i).getPath());
-        }
-        return picFolders;
-    }
-
 
 }
