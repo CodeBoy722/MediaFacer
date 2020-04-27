@@ -3,6 +3,8 @@
 # MediaFacer
 An android library for the structured querying of the MediaStore to  get media files in the simplest way possible taking in account both storage mediums on device
 
+### [Read the article on Medium](https://android.jlelse.eu/handling-media-files-with-mediafacer-library-for-android-cd9d2ca0dc68?source=friends_link&sk=02eb8a77e0d9f1958045a39550f0e3a0)
+
 [![](https://jitpack.io/v/CodeBoy722/MediaFacer.svg)](https://jitpack.io/#CodeBoy722/MediaFacer)
 
 # Download
