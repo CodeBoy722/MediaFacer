@@ -9,6 +9,7 @@ public class pictureContent {
     private  int pictureId;
     private  int date_added;
     private  int date_modified;
+    private long date_taken;
 
     public pictureContent() {
     }
@@ -75,6 +76,14 @@ public class pictureContent {
 
     public void setDate_modified(int date_modified) {
         this.date_modified = date_modified;
+    }
+
+    public long getDate_taken() {
+        return date_taken;
+    }
+
+    public void setDate_taken(long date_taken) {
+        this.date_taken = date_taken;
     }
 
 }

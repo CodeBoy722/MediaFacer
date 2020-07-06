@@ -17,6 +17,7 @@ public class audioContent {
     private String AssetFileStringUri;
     private long date_added;
     private long date_modified;
+    private long date_taken;
 
     public audioContent(){
 
@@ -117,4 +118,13 @@ public class audioContent {
     public void setDate_modified(long date_modified) {
         this.date_modified = date_modified;
     }
+
+    public long getDate_taken() {
+        return date_taken;
+    }
+
+    public void setDate_taken(long date_taken) {
+        this.date_taken = date_taken;
+    }
+
 }
