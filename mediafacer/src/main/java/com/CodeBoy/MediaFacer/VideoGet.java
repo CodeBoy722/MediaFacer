@@ -76,6 +76,13 @@ public class VideoGet {
                 }
 
                 try{
+                    videoContent.setDate_taken(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_TAKEN)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    videoContent.setDate_added(0000);
+                }
+
+                try{
                     videoContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED)));
                 }catch (Exception ex){
                     ex.printStackTrace();
@@ -107,13 +114,10 @@ public class VideoGet {
             cursor.moveToFirst();
             do{
                 videoFolderContent videoFolder = new videoFolderContent();
-                String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME));
                 String folder = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME));
                 String datapath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
 
-                //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
                 int bucket_id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_ID));
-                //}else {}
 
                 String folderpaths = datapath.substring(0, datapath.lastIndexOf(folder+"/"));
                 folderpaths = folderpaths+folder+"/";
@@ -181,6 +185,14 @@ public class VideoGet {
                 }
 
                 try{
+                    videoContent.setDate_taken(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_TAKEN)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    videoContent.setDate_added(0000);
+                }
+
+
+                try{
                     videoContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED)));
                 }catch (Exception ex){
                     ex.printStackTrace();
@@ -207,15 +219,85 @@ public class VideoGet {
                 MediaStore.Video.Media.BUCKET_ID,
                 MediaStore.Video.Media.SIZE,
                 MediaStore.Video.Media._ID,
+                MediaStore.Video.Media.DURATION,
                 MediaStore.Video.Media.DATE_ADDED,
                 MediaStore.Video.Media.DATE_MODIFIED,
                 MediaStore.Video.Media.DATE_TAKEN,
                 MediaStore.Video.Media.ALBUM,
                 MediaStore.Video.Media.ARTIST};
         cursor = videoContex.getContentResolver().query(contentLocation, projection, null, null, "LOWER ("+MediaStore.Video.Media.DATE_TAKEN+") DESC");//DESC
+        try{
+            cursor.moveToFirst();
+            do{
+                videoFolderContent videoFolder = new videoFolderContent();
+                videoContent videoContent = new videoContent();
 
+                videoContent.setVideoName(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)));
 
+                videoContent.setPath(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)));
 
+                videoContent.setVideoDuration(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)));
+
+                videoContent.setVideoSize(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)));
+
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID));
+                videoContent.setVideoId(id);
+
+                Uri contentUri = Uri.withAppendedPath(contentLocation, String.valueOf(id));
+                videoContent.setAssetFileStringUri(contentUri.toString());
+
+                videoContent.setAlbum(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.ALBUM)));
+
+                videoContent.setArtist(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.ARTIST)));
+
+                try{
+                    videoContent.setDate_added(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    videoContent.setDate_added(0000);
+                }
+
+                try{
+                    videoContent.setDate_taken(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_TAKEN)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    videoContent.setDate_added(0000);
+                }
+
+                try{
+                    videoContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    videoContent.setDate_added(0000);
+                }
+
+                String folder = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME));
+                String datapath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
+
+                int bucket_id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_ID));
+
+                String folderpaths = datapath.substring(0, datapath.lastIndexOf(folder+"/"));
+                folderpaths = folderpaths+folder+"/";
+
+                if (!videoPaths.contains(bucket_id)) {
+                    videoPaths.add(bucket_id);
+                    videoFolder.setBucket_id(bucket_id);
+                    videoFolder.setFolderPath(folderpaths);
+                    videoFolder.setFolderName(folder);
+                    videoFolder.getVideoFiles().add(videoContent);
+                    allVideoFolders.add(videoFolder);
+                }else{
+                    for(int i = 0; i < allVideoFolders.size();i++){
+                        if(allVideoFolders.get(i).getBucket_id() == bucket_id){
+                            allVideoFolders.get(i).getVideoFiles().add(videoContent);
+                        }
+                    }
+                }
+            }while (cursor.moveToNext());
+            cursor.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return allVideoFolders;
     }
 

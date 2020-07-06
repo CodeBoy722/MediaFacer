@@ -267,6 +267,4 @@ public class videoPlayerFragment extends Fragment {
         }
     }
 
-
-
 }

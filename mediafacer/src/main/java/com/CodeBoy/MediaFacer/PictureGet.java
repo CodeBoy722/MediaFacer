@@ -36,12 +36,15 @@ public class PictureGet {
     /**Returns an ArrayList of {@link pictureContent}  */
     public ArrayList<pictureContent> getAllPictureContents(Uri contentLocation){
         ArrayList<pictureContent> images = new ArrayList<>();
-        String[] projection = { MediaStore.Images.Media.DATA ,MediaStore.Images.Media.DISPLAY_NAME,
-                MediaStore.Images.Media.SIZE, MediaStore.Images.Media.DATE_ADDED,MediaStore.Images.Media._ID,
+        String[] projection = {
+                MediaStore.Images.Media.DATA,
+                MediaStore.Images.Media.DISPLAY_NAME,
+                MediaStore.Images.Media.SIZE,
+                MediaStore.Images.Media.DATE_ADDED,
+                MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DATE_MODIFIED};
         cursor = pictureContex.getContentResolver().query( contentLocation, projection, null, null,
                 "LOWER ("+MediaStore.Images.Media.DATE_TAKEN+") DESC");
-
         try {
             cursor.moveToFirst();
             do{
@@ -67,6 +70,13 @@ public class PictureGet {
                 }
 
                 try{
+                    pictureContent.setDate_taken(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    pictureContent.setDate_taken(0000);
+                }
+
+                try{
                     pictureContent.setDate_modified(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)));
                 }catch (Exception ex){
                     ex.printStackTrace();
@@ -83,6 +93,7 @@ public class PictureGet {
     }
 
     /**Returns an ArrayList of {@link pictureFolderContent}  */
+
     public ArrayList<pictureFolderContent> getPictureFolders(){
         ArrayList<pictureFolderContent> picFolders = new ArrayList<>();
         ArrayList<Integer> picPaths = new ArrayList<>();
@@ -97,13 +108,10 @@ public class PictureGet {
             cursor.moveToFirst();
             do{
                 pictureFolderContent photoFolder = new pictureFolderContent();
-                String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME));
                 String folder = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME));
                 String datapath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
 
-                //if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
                 int bucket_id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_ID));
-                //}else {}
 
                 String folderpaths = datapath.substring(0, datapath.lastIndexOf(folder+"/"));
                 folderpaths = folderpaths+folder+"/";
@@ -160,23 +168,113 @@ public class PictureGet {
                 }
 
                 try{
+                    pictureContent.setDate_taken(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    pictureContent.setDate_taken(0000);
+                }
+
+                try{
                     pictureContent.setDate_modified(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)));
                 }catch (Exception ex){
                     ex.printStackTrace();
                     pictureContent.setDate_added(0000);
                 }
+
                 images.add(pictureContent);
             }while(cursor.moveToNext());
             cursor.close();
-//            ArrayList<pictureContent> reSelection = new ArrayList<>();
-//            for(int i = images.size()-1;i > -1;i--){
-//                reSelection.add(images.get(i));
-//            }
-//            images = reSelection;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return images;
+    }
+
+    public ArrayList<pictureFolderContent> getAbsolutePictureFolders(){
+        ArrayList<pictureFolderContent> absolutePictureFolders = new ArrayList<>();
+        ArrayList<Integer> picturePaths = new ArrayList<>();
+        @SuppressLint("InlinedApi") String[] projection = {
+                MediaStore.Images.ImageColumns.DATA,
+                MediaStore.Images.Media.DISPLAY_NAME,
+                MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
+                MediaStore.Images.Media.BUCKET_ID,
+                MediaStore.Images.Media.SIZE,
+                MediaStore.Images.Media.DATE_ADDED,
+                MediaStore.Images.Media._ID,
+                MediaStore.Images.Media.DATE_TAKEN,
+                MediaStore.Images.Media.DATE_MODIFIED};
+        cursor = pictureContex.getContentResolver().query( externalContentUri, projection, null, null,
+                "LOWER ("+MediaStore.Images.Media.DATE_TAKEN+") DESC");
+        try{
+            cursor.moveToFirst();
+            do{
+
+                pictureFolderContent photoFolder = new pictureFolderContent();
+                pictureContent pictureContent = new pictureContent();
+
+                pictureContent.setPicturName(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)));
+
+                pictureContent.setPicturePath(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)));
+
+                pictureContent.setPictureSize(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE)));
+
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
+                pictureContent.setPictureId(id);
+
+                Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
+                pictureContent.setAssertFileStringUri(contentUri.toString());
+
+                try{
+                    pictureContent.setDate_added(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    pictureContent.setDate_added(0000);
+                }
+
+                try{
+                    pictureContent.setDate_taken(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    pictureContent.setDate_taken(0000);
+                }
+
+                try{
+                    pictureContent.setDate_modified(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)));
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    pictureContent.setDate_added(0000);
+                }
+
+                String folder = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME));
+                String datapath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+
+                int bucket_id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_ID));
+
+                String folderpaths = datapath.substring(0, datapath.lastIndexOf(folder+"/"));
+                folderpaths = folderpaths+folder+"/";
+                if (!picturePaths.contains(bucket_id)) {
+                    picturePaths.add(bucket_id);
+
+                    photoFolder.setBucket_id(bucket_id);
+                    photoFolder.setFolderPath(folderpaths);
+                    photoFolder.setFolderName(folder);
+                    photoFolder.getPhotos().add(pictureContent);
+                    absolutePictureFolders.add(photoFolder);
+                }else {
+                    for (int i = 0; i < absolutePictureFolders.size();i++){
+                        if(absolutePictureFolders.get(i).getBucket_id() == bucket_id){
+                            absolutePictureFolders.get(i).getPhotos().add(pictureContent);
+                        }
+                    }
+                }
+            }while (cursor.moveToNext());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+
+        return absolutePictureFolders;
     }
 
 }
