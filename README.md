@@ -28,7 +28,7 @@ Add the dependency in the app level build.gradle file
 
 ```gradle
 dependencies {
-	   implementation 'com.github.CodeBoy722:MediaFacer:1.0.2'
+	   implementation 'com.github.CodeBoy722:MediaFacer:1.0.3'
 	}
 ```
 	
