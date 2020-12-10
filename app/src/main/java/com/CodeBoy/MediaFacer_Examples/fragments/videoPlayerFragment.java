@@ -18,7 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
-import com.CodeBoy.MediaFacer.mediaDataCalculator;
+import com.CodeBoy.MediaFacer.MediaDataCalculator;
 import com.CodeBoy.MediaFacer.mediaHolders.videoContent;
 import com.CodeBoy.MediaFacer_Examples.R;
 
@@ -160,7 +160,7 @@ public class videoPlayerFragment extends Fragment {
             }
         });
 
-        duration.setText(mediaDataCalculator.convertDuration(videos.get(position).getVideoDuration()));
+        duration.setText(MediaDataCalculator.convertDuration(videos.get(position).getVideoDuration()));
 
         seeker.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int userSelectedPosition = 0;
@@ -169,7 +169,7 @@ public class videoPlayerFragment extends Fragment {
                 if(fromUser){
                     userSelectedPosition = progress;
                 }
-                progress_text.setText(mediaDataCalculator.milliSecondsToTimer(progress));
+                progress_text.setText(MediaDataCalculator.milliSecondsToTimer(progress));
                 seekBar.setProgress(progress);
             }
 
@@ -199,14 +199,14 @@ public class videoPlayerFragment extends Fragment {
             position = 0;
             playZone.setVideoURI(Uri.parse(videos.get(position).getAssetFileStringUri()));
             seeker.setMax((int) videos.get(position).getVideoDuration());
-            duration.setText(mediaDataCalculator.convertDuration(videos.get(position).getVideoDuration()));
+            duration.setText(MediaDataCalculator.convertDuration(videos.get(position).getVideoDuration()));
             playZone.start();
             startUpdatingCallbackWithPosition();
         }else {
             position = position + 1;
             playZone.setVideoURI(Uri.parse(videos.get(position).getAssetFileStringUri()));
             seeker.setMax((int) videos.get(position).getVideoDuration());
-            duration.setText(mediaDataCalculator.convertDuration(videos.get(position).getVideoDuration()));
+            duration.setText(MediaDataCalculator.convertDuration(videos.get(position).getVideoDuration()));
             playZone.start();
             startUpdatingCallbackWithPosition();
         }
@@ -217,14 +217,14 @@ public class videoPlayerFragment extends Fragment {
             position = videos.size() - 1;
             playZone.setVideoURI(Uri.parse(videos.get(position).getAssetFileStringUri()));
             seeker.setMax((int) videos.get(position).getVideoDuration());
-            duration.setText(mediaDataCalculator.convertDuration(videos.get(position).getVideoDuration()));
+            duration.setText(MediaDataCalculator.convertDuration(videos.get(position).getVideoDuration()));
             playZone.start();
             startUpdatingCallbackWithPosition();
         }else{
             position = position - 1;
             playZone.setVideoURI(Uri.parse(videos.get(position).getAssetFileStringUri()));
             seeker.setMax((int) videos.get(position).getVideoDuration());
-            duration.setText(mediaDataCalculator.convertDuration(videos.get(position).getVideoDuration()));
+            duration.setText(MediaDataCalculator.convertDuration(videos.get(position).getVideoDuration()));
             playZone.start();
             startUpdatingCallbackWithPosition();
         }

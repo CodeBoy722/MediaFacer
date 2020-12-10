@@ -8,8 +8,8 @@ import android.provider.MediaStore;
 import com.CodeBoy.MediaFacer.mediaHolders.videoContent;
 import com.CodeBoy.MediaFacer.mediaHolders.videoFolderContent;
 import java.util.ArrayList;
-public class VideoGet {
 
+public class VideoGet {
     private static  VideoGet videoGet;
     private Context videoContex;
     public static final Uri externalContentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;

@@ -2,7 +2,7 @@ package com.CodeBoy.MediaFacer;
 
 import java.text.DecimalFormat;
 
-public class mediaDataCalculator {
+public class MediaDataCalculator {
 
 
     public static String convertDuration(long duration) {

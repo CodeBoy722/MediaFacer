@@ -82,6 +82,8 @@ public class AudioGet {
                         audioContent.setDate_modified(0000);
                     }
 
+                    //cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Genres.NAME));
+
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                     audioContent.setFilePath(path);
                     File audio = new File(path);

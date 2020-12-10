@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.CodeBoy.MediaFacer.mediaDataCalculator;
+import com.CodeBoy.MediaFacer.MediaDataCalculator;
 import com.CodeBoy.MediaFacer.mediaHolders.pictureContent;
 import com.CodeBoy.MediaFacer_Examples.R;
 import com.bumptech.glide.Glide;
@@ -48,7 +48,7 @@ public class pictureInfo extends DialogFragment {
 
         filename.setText(picture.getPicturName());
         filepath.setText(picture.getPicturePath());
-        size.setText(mediaDataCalculator.convertBytes(picture.getPictureSize()));
+        size.setText(MediaDataCalculator.convertBytes(picture.getPictureSize()));
 
         Date da = new Date(picture.getDate_added());
         Date dm = new Date(picture.getDate_modified());

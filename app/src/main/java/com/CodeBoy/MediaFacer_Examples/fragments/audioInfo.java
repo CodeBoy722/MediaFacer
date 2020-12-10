@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.CodeBoy.MediaFacer.mediaDataCalculator;
+import com.CodeBoy.MediaFacer.MediaDataCalculator;
 import com.CodeBoy.MediaFacer.mediaHolders.audioContent;
 import com.CodeBoy.MediaFacer_Examples.R;
 import com.bumptech.glide.Glide;
@@ -44,7 +44,7 @@ public class audioInfo extends DialogFragment {
 
         filename.setText(audio.getName());
         filepath.setText(audio.getFilePath());
-        size.setText(mediaDataCalculator.convertBytes(audio.getMusicSize()));
+        size.setText(MediaDataCalculator.convertBytes(audio.getMusicSize()));
 
         Date da = new Date(audio.getDate_added());
         Date dm = new Date(audio.getDate_modified());

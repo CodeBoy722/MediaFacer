@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.CodeBoy.MediaFacer.mediaDataCalculator;
+import com.CodeBoy.MediaFacer.MediaDataCalculator;
 import com.CodeBoy.MediaFacer.mediaHolders.videoContent;
 import com.CodeBoy.MediaFacer_Examples.R;
 import com.bumptech.glide.Glide;
@@ -45,7 +45,7 @@ public class videoInfo extends DialogFragment {
 
         filename.setText(video.getVideoName());
         filepath.setText(video.getPath());
-        size.setText(mediaDataCalculator.convertBytes(video.getVideoSize()));
+        size.setText(MediaDataCalculator.convertBytes(video.getVideoSize()));
 
         Date da = new Date(video.getDate_added());
         Date dm = new Date(video.getDate_modified());

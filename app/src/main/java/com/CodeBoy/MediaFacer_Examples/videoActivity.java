@@ -3,7 +3,6 @@ package com.CodeBoy.MediaFacer_Examples;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.transition.Transition;
@@ -14,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.CodeBoy.MediaFacer.MediaFacer;
 import com.CodeBoy.MediaFacer.VideoGet;
 import com.CodeBoy.MediaFacer.mediaHolders.videoContent;
