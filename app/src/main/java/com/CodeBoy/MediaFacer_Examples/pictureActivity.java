@@ -113,7 +113,7 @@ public class pictureActivity extends AppCompatActivity {
             folders.add(pictureFolders.get(i).getFolderName());
         }
 
-        ArrayAdapter seletorAdapter = new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item, folders);
+        ArrayAdapter<String> seletorAdapter = new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item, folders);
         folderSelector.setAdapter(seletorAdapter);
 
         folderSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

@@ -56,8 +56,7 @@ public class fragment_audio_folders extends Fragment {
     private void showAudioFolder(audioFolderContent folderContent){
         fragment_audioDataDisplay audioDataDisplay = new fragment_audioDataDisplay();
         audioDataDisplay.setType("Folder",folderContent.getFolderName(),folderContent.getMusicFiles());
-        Transition transition = TransitionInflater.from(getContext()).
-                inflateTransition(android.R.transition.explode);
+        Transition transition = TransitionInflater.from(getContext()).inflateTransition(android.R.transition.explode);
 
         setEnterTransition(transition);
         setExitTransition(transition);
