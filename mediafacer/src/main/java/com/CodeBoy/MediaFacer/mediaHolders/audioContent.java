@@ -10,6 +10,8 @@ public class audioContent {
     private String filePath;
     private String Artist;
     private String Album;
+    private String Genre;
+    private String Composer;
     private Uri art_uri;
     private long musicSize;
     private long Duration;
@@ -21,6 +23,22 @@ public class audioContent {
 
     public audioContent(){
 
+    }
+
+    public String getGenre() {
+        return Genre;
+    }
+
+    public void setGenre(String genre) {
+        Genre = genre;
+    }
+
+    public String getComposer() {
+        return Composer;
+    }
+
+    public void setComposer(String composer) {
+        Composer = composer;
     }
 
     public String getName() {

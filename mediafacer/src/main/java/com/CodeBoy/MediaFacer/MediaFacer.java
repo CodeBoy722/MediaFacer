@@ -26,6 +26,8 @@ public class MediaFacer {
     /** scans all media content on device */
     private void ScanAllMedia(){
 
+
+
     }
 
     /** save general information about all media on de vice in  */

@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 
 public class MediaDataCalculator {
 
-
     public static String convertDuration(long duration) {
         String out = null;
         long hours=0;
@@ -74,8 +73,8 @@ public class MediaDataCalculator {
         return hrSize;
     }
 
+    // returns the size of a media file
     public static String convertBytes(long filesize){
-        //File video = new File(museFacer.getAbsolutePath());
         long size = filesize;
         // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
         long fileSizeInKB = size / 1024;

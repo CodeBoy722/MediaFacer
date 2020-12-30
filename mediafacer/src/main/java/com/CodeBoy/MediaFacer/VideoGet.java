@@ -60,7 +60,6 @@ public class VideoGet {
 
                 int id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID));
                 videoContent.setVideoId(id);
-
                 Uri contentUri = Uri.withAppendedPath(contentLocation, String.valueOf(id));
                 videoContent.setAssetFileStringUri(contentUri.toString());
 
