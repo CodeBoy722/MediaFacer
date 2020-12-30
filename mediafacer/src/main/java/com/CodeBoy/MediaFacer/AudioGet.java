@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.MediaStore;
 import android.util.Log;
 import com.CodeBoy.MediaFacer.mediaHolders.audioAlbumContent;
@@ -17,19 +16,19 @@ import java.util.ArrayList;
 public class AudioGet {
 
     private static  AudioGet audioGet;
-    private Context audioContex;
+    private Context AudioContext;
     public static final Uri externalContentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
     public static final Uri internalContentUri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
     private static Cursor cursor;
 
-    private AudioGet(Context contx){
+    private AudioGet(Context context){
         //set up audio getting params
-        audioContex = contx.getApplicationContext();
+        AudioContext = context.getApplicationContext();
     }
 
-    static AudioGet getInstance(Context contx){
+    static AudioGet getInstance(Context context){
         if(audioGet == null){
-            audioGet = new AudioGet(contx);
+            audioGet = new AudioGet(context);
         }
         return audioGet;
     }
@@ -54,7 +53,7 @@ public class AudioGet {
     @SuppressLint("InlinedApi")
     public ArrayList<audioContent> getAllAudioContent(Uri contentLocation) {
         ArrayList<audioContent> allAudioContent = new ArrayList<>();
-        cursor = audioContex.getContentResolver().query(contentLocation,Projections, Selection, null, "LOWER ("+MediaStore.Audio.Media.TITLE + ") ASC");
+        cursor = AudioContext.getContentResolver().query(contentLocation,Projections, Selection, null, "LOWER ("+MediaStore.Audio.Media.TITLE + ") ASC");
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
@@ -85,34 +84,9 @@ public class AudioGet {
 
                     audioContent.setArtist(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
 
-                    //audioContent.setGenre(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Genres.Members.DISPLAY_NAME)));
-
                     audioContent.setGenre(GetGenre(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))));
 
                     audioContent.setComposer(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.COMPOSER)));
-
-                    try{
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            audioContent.setDate_taken(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_TAKEN)));
-                        }
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                        audioContent.setDate_taken(0000);
-                    }
-
-                    try{
-                        audioContent.setDate_added(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                        audioContent.setDate_added(0000);
-                    }
-
-                    try{
-                        audioContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                        audioContent.setDate_modified(0000);
-                    }
 
                     allAudioContent.add(audioContent);
                 } while (cursor.moveToNext());
@@ -129,15 +103,15 @@ public class AudioGet {
         };
 
         Uri uri = MediaStore.Audio.Genres.getContentUriForAudioId("external", media_id );
-        Cursor genresCursor = audioContex.getContentResolver().query(uri, genresProj , null, null, null);
+        Cursor genresCursor = AudioContext.getContentResolver().query(uri, genresProj , null, null, null);
         int genreIndex = genresCursor.getColumnIndexOrThrow(MediaStore.Audio.Genres.NAME);
 
         String genre = "";
         while (genresCursor.moveToNext()) {
             genre = genresCursor.getString(genreIndex);
         }
-
-        return genre;
+        genresCursor.close();
+    return genre;
     }
 
     /**Returns an ArrayList of {@link audioAlbumContent} */
@@ -147,7 +121,7 @@ public class AudioGet {
         @SuppressLint("InlinedApi") String[] projection = {MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.ALBUM,MediaStore.Audio.Media.TITLE,
                 MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.ARTIST,MediaStore.Audio.Media.DISPLAY_NAME,MediaStore.Audio.Media._ID,MediaStore.Audio.Media.ARTIST_ID};
 
-        cursor = audioContex.getContentResolver().query(contentLocation,projection, selection, null, "LOWER ("+MediaStore.Audio.Media.ALBUM + ") ASC");
+        cursor = AudioContext.getContentResolver().query(contentLocation,projection, selection, null, "LOWER ("+MediaStore.Audio.Media.ALBUM + ") ASC");
         ArrayList<String> albumNames = new ArrayList<>();
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -177,20 +151,6 @@ public class AudioGet {
                     Uri contentUri = Uri.withAppendedPath(contentLocation, String.valueOf(id));
                     audioContent.setAssetFileStringUri(contentUri.toString());
 
-                    try{
-                        audioContent.setDate_added(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                        audioContent.setDate_added(0000);
-                    }
-
-                    try{
-                        audioContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                        audioContent.setDate_modified(0000);
-                    }
-
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                     audioContent.setFilePath(path);
                     File audio = new File(path);
@@ -218,7 +178,7 @@ public class AudioGet {
             cursor.close();
         }
         //try saving in cache for better loading next time
-        audioContex.getExternalCacheDir();
+        AudioContext.getExternalCacheDir();
         return audioAlbumContents;
     }
 
@@ -227,7 +187,7 @@ public class AudioGet {
         ArrayList<audioAlbumContent> AllAlbums = new ArrayList<>();
         @SuppressLint("InlinedApi") String[] projection = {MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.ALBUM,MediaStore.Audio.Media.TITLE,
                 MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.ARTIST,MediaStore.Audio.Media.DISPLAY_NAME,MediaStore.Audio.Media._ID,MediaStore.Audio.Media.ARTIST_ID};
-        cursor = audioContex.getContentResolver().query(contentLocation,projection,
+        cursor = AudioContext.getContentResolver().query(contentLocation,projection,
                 MediaStore.Audio.Artists.ARTIST + " like ? ", new String[] {"%"+artist_id+"%"}, "LOWER ("+MediaStore.Audio.Artists.ARTIST + ") ASC");
         ArrayList<String> albumNames = new ArrayList<>();
         if (cursor != null) {
@@ -252,20 +212,6 @@ public class AudioGet {
 
                     Uri contentUri = Uri.withAppendedPath(contentLocation, String.valueOf(id));
                     audioContent.setAssetFileStringUri(contentUri.toString());
-
-                    try{
-                        audioContent.setDate_added(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                        audioContent.setDate_added(0000);
-                    }
-
-                    try{
-                        audioContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                        audioContent.setDate_modified(0000);
-                    }
 
                     long album_id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
                     Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
@@ -300,7 +246,7 @@ public class AudioGet {
         }
 
         //try saving in cache for better loading next time
-        audioContex.getExternalCacheDir();
+        AudioContext.getExternalCacheDir();
         return AllAlbums;
     }
 
@@ -310,7 +256,7 @@ public class AudioGet {
         ArrayList<String> allArtistIds = new ArrayList<>();
         String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
         String[] projection = {MediaStore.Audio.Media.ARTIST,MediaStore.Audio.Media.ARTIST_ID,MediaStore.Audio.Media.ARTIST_KEY,MediaStore.Audio.Artists.ARTIST};
-        cursor = audioContex.getContentResolver().query(contentLocation,projection, selection, null, "LOWER ("+MediaStore.Audio.Artists.ARTIST + ") ASC");
+        cursor = AudioContext.getContentResolver().query(contentLocation,projection, selection, null, "LOWER ("+MediaStore.Audio.Artists.ARTIST + ") ASC");
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
@@ -346,7 +292,7 @@ public class AudioGet {
         String selection = android.provider.MediaStore.Audio.Media.IS_MUSIC + " != 0";
         String[] projection = {MediaStore.Audio.Media.DATA,MediaStore.Audio.Media.TITLE,MediaStore.Audio.Media.BUCKET_ID,MediaStore.Audio.Media.ALBUM_ID,MediaStore.Audio.Media.ALBUM,
                 MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.DURATION,MediaStore.Audio.Media.DISPLAY_NAME,MediaStore.Audio.Media._ID};
-        cursor = audioContex.getContentResolver().query(allsongsuri, projection, selection, null, "LOWER ("+MediaStore.Audio.Media.TITLE + ") ASC");
+        cursor = AudioContext.getContentResolver().query(allsongsuri, projection, selection, null, "LOWER ("+MediaStore.Audio.Media.TITLE + ") ASC");
         ArrayList<Integer> folders = new ArrayList<>();
         try {
             if (cursor != null) {
@@ -381,20 +327,6 @@ public class AudioGet {
 
                 Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
                 audioContent.setAssetFileStringUri(contentUri.toString());
-
-                try{
-                    audioContent.setDate_added(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    audioContent.setDate_added(0000);
-                }
-
-                try{
-                    audioContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    audioContent.setDate_modified(0000);
-                }
 
                 String album_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                 audioContent.setAlbum(album_name);
@@ -435,7 +367,7 @@ public class AudioGet {
         }
 
         //try saving in cache for better loading next time
-        audioContex.getExternalCacheDir();
+        AudioContext.getExternalCacheDir();
         return musicFolders;
     }
 
@@ -443,7 +375,7 @@ public class AudioGet {
         audioContent audioContent = new audioContent();
         @SuppressLint("InlinedApi") String[] projection = {MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.ALBUM,MediaStore.Audio.Media.TITLE,
                 MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.ARTIST,MediaStore.Audio.Media.DISPLAY_NAME,MediaStore.Audio.Media._ID,MediaStore.Audio.Media.ARTIST_ID};
-        cursor = audioContex.getContentResolver().query(externalContentUri,projection,
+        cursor = AudioContext.getContentResolver().query(externalContentUri,projection,
                 MediaStore.Audio.Media.DATA + " like ? ", new String[] {"%"+datapath+"%"}, null);
 
         if (cursor != null) {
@@ -461,20 +393,6 @@ public class AudioGet {
 
                     Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
                     audioContent.setAssetFileStringUri(contentUri.toString());
-
-                    try{
-                        audioContent.setDate_added(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                        audioContent.setDate_added(0000);
-                    }
-
-                    try{
-                        audioContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                        audioContent.setDate_modified(0000);
-                    }
 
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                     audioContent.setFilePath(path);
@@ -507,7 +425,7 @@ public class AudioGet {
         ArrayList<audioContent> audioContents = new ArrayList<>();
         @SuppressLint("InlinedApi") String[] projection = {MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.ALBUM,MediaStore.Audio.Media.TITLE,
                 MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.ARTIST,MediaStore.Audio.Media.DISPLAY_NAME,MediaStore.Audio.Media._ID,MediaStore.Audio.Media.ARTIST_ID};
-        cursor = audioContex.getContentResolver().query(externalContentUri,projection,
+        cursor = AudioContext.getContentResolver().query(externalContentUri,projection,
                 MediaStore.Audio.Media.TITLE + " like ? ", new String[] {"%"+audioTitle+"%"}, "LOWER ("+MediaStore.Audio.Media.TITLE + ") ASC");
 
         if (cursor != null) {
@@ -526,20 +444,6 @@ public class AudioGet {
 
                     Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
                     audioContent.setAssetFileStringUri(contentUri.toString());
-
-                    try{
-                        audioContent.setDate_added(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                        audioContent.setDate_added(0000);
-                    }
-
-                    try{
-                        audioContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                        audioContent.setDate_modified(0000);
-                    }
 
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                     audioContent.setFilePath(path);
@@ -574,7 +478,7 @@ public class AudioGet {
         ArrayList<audioContent> audioContents = new ArrayList<>();
         @SuppressLint("InlinedApi") String[] projection = {MediaStore.Audio.AudioColumns.DATA, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.AudioColumns.ALBUM,MediaStore.Audio.AudioColumns.TITLE,
                 MediaStore.Audio.AudioColumns.DURATION,MediaStore.Audio.ArtistColumns.ARTIST,MediaStore.Audio.Media.DISPLAY_NAME,MediaStore.Audio.Media._ID,MediaStore.Audio.Media.ARTIST_ID};
-        cursor = audioContex.getContentResolver().query(externalContentUri,projection,
+        cursor = AudioContext.getContentResolver().query(externalContentUri,projection,
                 MediaStore.Audio.Media.ALBUM + " like ? ", new String[] {"%"+albumName+"%"}, "LOWER ("+MediaStore.Audio.Media.TITLE + ") ASC");
 
         if (cursor != null) {
@@ -598,20 +502,6 @@ public class AudioGet {
 
                     Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
                     audioContent.setAssetFileStringUri(contentUri.toString());
-
-                    try{
-                        audioContent.setDate_added(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                        audioContent.setDate_added(0000);
-                    }
-
-                    try{
-                        audioContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                        audioContent.setDate_modified(0000);
-                    }
 
                     String album_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                     audioContent.setAlbum(album_name);
@@ -641,7 +531,7 @@ public class AudioGet {
         ArrayList<audioContent> audioContents = new ArrayList<>();
         @SuppressLint("InlinedApi") String[] projection = {MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.ALBUM,MediaStore.Audio.Media.TITLE,
                 MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.ARTIST,MediaStore.Audio.Media.DISPLAY_NAME,MediaStore.Audio.Media._ID,MediaStore.Audio.Media.ARTIST_ID};
-        cursor = audioContex.getContentResolver().query(externalContentUri,projection,
+        cursor = AudioContext.getContentResolver().query(externalContentUri,projection,
                 MediaStore.Audio.Media.ARTIST + " like ? ", new String[] {"%"+artistName+"%"}, "LOWER ("+MediaStore.Audio.Media.TITLE + ") ASC");
 
         if (cursor != null) {
@@ -660,20 +550,6 @@ public class AudioGet {
 
                     Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
                     audioContent.setAssetFileStringUri(contentUri.toString());
-
-                    try{
-                        audioContent.setDate_added(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED)));
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                        audioContent.setDate_added(0000);
-                    }
-
-                    try{
-                        audioContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)));
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                        audioContent.setDate_modified(0000);
-                    }
 
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                     audioContent.setFilePath(path);
@@ -695,7 +571,6 @@ public class AudioGet {
                     audioContent.setArtist(artist_name);
 
                     audioContents.add(audioContent);
-
 
                 } while (cursor.moveToNext());
             }

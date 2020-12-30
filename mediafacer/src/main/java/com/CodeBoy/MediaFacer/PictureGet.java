@@ -62,27 +62,6 @@ public class PictureGet {
                 Uri contentUri = Uri.withAppendedPath(contentLocation, String.valueOf(id));
                 pictureContent.setAssertFileStringUri(contentUri.toString());
 
-                try{
-                    pictureContent.setDate_added(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    pictureContent.setDate_added(0000);
-                }
-
-                try{
-                    pictureContent.setDate_taken(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    pictureContent.setDate_taken(0000);
-                }
-
-                try{
-                    pictureContent.setDate_modified(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    pictureContent.setDate_added(0000);
-                }
-
                 images.add(pictureContent);
             }while(cursor.moveToNext());
             cursor.close();
@@ -160,27 +139,6 @@ public class PictureGet {
                 Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
                 pictureContent.setAssertFileStringUri(contentUri.toString());
 
-                try{
-                    pictureContent.setDate_added(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    pictureContent.setDate_added(0000);
-                }
-
-                try{
-                    pictureContent.setDate_taken(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    pictureContent.setDate_taken(0000);
-                }
-
-                try{
-                    pictureContent.setDate_modified(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    pictureContent.setDate_added(0000);
-                }
-
                 images.add(pictureContent);
             }while(cursor.moveToNext());
             cursor.close();
@@ -224,27 +182,6 @@ public class PictureGet {
                 Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
                 pictureContent.setAssertFileStringUri(contentUri.toString());
 
-                try{
-                    pictureContent.setDate_added(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    pictureContent.setDate_added(0000);
-                }
-
-                try{
-                    pictureContent.setDate_taken(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    pictureContent.setDate_taken(0000);
-                }
-
-                try{
-                    pictureContent.setDate_modified(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    pictureContent.setDate_added(0000);
-                }
-
                 String folder = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME));
                 String datapath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
 
@@ -271,8 +208,6 @@ public class PictureGet {
         }catch (Exception e){
             e.printStackTrace();
         }
-
-
 
         return absolutePictureFolders;
     }

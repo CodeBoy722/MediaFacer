@@ -7,9 +7,6 @@ public class pictureContent {
     private  Long pictureSize;
     private  String assertFileStringUri;
     private  int pictureId;
-    private  int date_added;
-    private  int date_modified;
-    private long date_taken;
 
     public pictureContent() {
     }
@@ -60,30 +57,6 @@ public class pictureContent {
 
     public void setPictureId(int pictureId) {
         this.pictureId = pictureId;
-    }
-
-    public int getDate_added() {
-        return date_added;
-    }
-
-    public void setDate_added(int date_added) {
-        this.date_added = date_added;
-    }
-
-    public int getDate_modified() {
-        return date_modified;
-    }
-
-    public void setDate_modified(int date_modified) {
-        this.date_modified = date_modified;
-    }
-
-    public long getDate_taken() {
-        return date_taken;
-    }
-
-    public void setDate_taken(long date_taken) {
-        this.date_taken = date_taken;
     }
 
 }

@@ -67,27 +67,6 @@ public class VideoGet {
 
                 videoContent.setArtist(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.ARTIST)));
 
-                try{
-                    videoContent.setDate_added(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    videoContent.setDate_added(0000);
-                }
-
-                try{
-                    videoContent.setDate_taken(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_TAKEN)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    videoContent.setDate_added(0000);
-                }
-
-                try{
-                    videoContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    videoContent.setDate_added(0000);
-                }
-
                 allVideo.add(videoContent);
             }while(cursor.moveToNext());
 
@@ -176,28 +155,6 @@ public class VideoGet {
 
                 videoContent.setArtist(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.ARTIST)));
 
-                try{
-                    videoContent.setDate_added(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    videoContent.setDate_added(0000);
-                }
-
-                try{
-                    videoContent.setDate_taken(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_TAKEN)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    videoContent.setDate_added(0000);
-                }
-
-
-                try{
-                    videoContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    videoContent.setDate_added(0000);
-                }
-
                 videoContents.add(videoContent);
             }while(cursor.moveToNext());
             cursor.close();
@@ -248,27 +205,6 @@ public class VideoGet {
                 videoContent.setAlbum(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.ALBUM)));
 
                 videoContent.setArtist(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.ARTIST)));
-
-                try{
-                    videoContent.setDate_added(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    videoContent.setDate_added(0000);
-                }
-
-                try{
-                    videoContent.setDate_taken(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_TAKEN)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    videoContent.setDate_added(0000);
-                }
-
-                try{
-                    videoContent.setDate_modified(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED)));
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                    videoContent.setDate_added(0000);
-                }
 
                 String folder = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME));
                 String datapath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));

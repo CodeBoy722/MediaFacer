@@ -42,19 +42,11 @@ public class pictureInfo extends DialogFragment {
         TextView filename = view.findViewById(R.id.filename);
         TextView filepath = view.findViewById(R.id.fullpath);
         TextView size = view.findViewById(R.id.size);
-        TextView date_added = view.findViewById(R.id.date_added);
-        TextView last_modified = view.findViewById(R.id.last_modified);
         ImageView pictureView = view.findViewById(R.id.pic);
 
         filename.setText(picture.getPicturName());
         filepath.setText(picture.getPicturePath());
         size.setText(MediaDataCalculator.convertBytes(picture.getPictureSize()));
-
-        Date da = new Date(picture.getDate_added());
-        Date dm = new Date(picture.getDate_modified());
-
-        date_added.setText(da.toString());
-        last_modified.setText(dm.toString());
 
         Glide.with(getActivity())
                 .load(picture.getPicturePath())
