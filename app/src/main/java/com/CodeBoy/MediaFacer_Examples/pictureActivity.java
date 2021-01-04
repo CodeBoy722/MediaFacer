@@ -106,7 +106,7 @@ public class pictureActivity extends AppCompatActivity {
 
         final ArrayList<pictureFolderContent> pictureFolders = new ArrayList<>();
         pictureFolders.add(new pictureFolderContent("all","*All*"));
-        pictureFolders.addAll(MediaFacer.withPictureContex(this).getAbsolutePictureFolders());
+        pictureFolders.addAll(MediaFacer.withPictureContex(this).getAllPictureFolders());
 
         final ArrayList<String> folders = new ArrayList<>();
         for(int i = 0;i < pictureFolders.size();i++){

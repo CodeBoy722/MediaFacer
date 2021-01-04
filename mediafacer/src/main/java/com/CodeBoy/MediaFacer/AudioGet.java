@@ -10,19 +10,20 @@ import com.CodeBoy.MediaFacer.mediaHolders.audioAlbumContent;
 import com.CodeBoy.MediaFacer.mediaHolders.audioArtistContent;
 import com.CodeBoy.MediaFacer.mediaHolders.audioContent;
 import com.CodeBoy.MediaFacer.mediaHolders.audioFolderContent;
+import com.CodeBoy.MediaFacer.mediaHolders.audioGenreContents;
+
 import java.io.File;
 import java.util.ArrayList;
 
 public class AudioGet {
 
     private static  AudioGet audioGet;
-    private Context AudioContext;
+    private final Context AudioContext;
     public static final Uri externalContentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
     public static final Uri internalContentUri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
     private static Cursor cursor;
 
     private AudioGet(Context context){
-        //set up audio getting params
         AudioContext = context.getApplicationContext();
     }
 
@@ -33,7 +34,7 @@ public class AudioGet {
         return audioGet;
     }
     String Selection = android.provider.MediaStore.Audio.Media.IS_MUSIC + " != 0";
-    @SuppressLint("InlinedApi") String[] Projections = {
+    @SuppressLint("InlinedApi") private final String[] Projections = {
             MediaStore.Audio.Media.TITLE,
             MediaStore.Audio.Media.DISPLAY_NAME,
             MediaStore.Audio.Media.ARTIST,
@@ -41,12 +42,12 @@ public class AudioGet {
             MediaStore.Audio.Media.ALBUM,
             MediaStore.Audio.Media.ALBUM_ID,
             MediaStore.Audio.Media.COMPOSER,
+            MediaStore.Audio.Media.SIZE,
             MediaStore.Audio.Media._ID,
             MediaStore.Audio.Media.DATA,
             MediaStore.Audio.Media.DURATION,
-            MediaStore.Audio.Media.DATE_ADDED,
-            MediaStore.Audio.Media.DATE_TAKEN,
-            MediaStore.Audio.Media.DATE_MODIFIED,
+            MediaStore.Audio.Media.BUCKET_ID,
+
     };
 
     /**Returns an Arraylist of {@link audioContent} */
@@ -70,8 +71,7 @@ public class AudioGet {
 
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                     audioContent.setFilePath(path);
-                    File audio = new File(path);
-                    audioContent.setMusicSize(audio.length());
+                    audioContent.setMusicSize(cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)));
 
                     audioContent.setAlbum(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)));
 
@@ -117,28 +117,21 @@ public class AudioGet {
     /**Returns an ArrayList of {@link audioAlbumContent} */
     public ArrayList<audioAlbumContent> getAllAlbums(Uri contentLocation) {
         ArrayList<audioAlbumContent> audioAlbumContents = new ArrayList<>();
-        String selection = android.provider.MediaStore.Audio.Media.IS_MUSIC + " != 0";
-        @SuppressLint("InlinedApi") String[] projection = {MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.ALBUM,MediaStore.Audio.Media.TITLE,
-                MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.ARTIST,MediaStore.Audio.Media.DISPLAY_NAME,MediaStore.Audio.Media._ID,MediaStore.Audio.Media.ARTIST_ID};
-
-        cursor = AudioContext.getContentResolver().query(contentLocation,projection, selection, null, "LOWER ("+MediaStore.Audio.Media.ALBUM + ") ASC");
+        cursor = AudioContext.getContentResolver().query(contentLocation,Projections,Selection, null, "LOWER ("+MediaStore.Audio.Media.ALBUM + ") ASC");
         ArrayList<String> albumNames = new ArrayList<>();
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
                     audioAlbumContent album; audioContent audioContent = new audioContent();
 
-                    String song_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
-                    audioContent.setName(song_name);
+                    audioContent.setName(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)));
 
-                    String songTitle = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
-                    audioContent.setTitle(songTitle);
+                    audioContent.setTitle(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)));
 
                     long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
                     audioContent.setMusicID(id);
 
-                    @SuppressLint("InlinedApi") long dur = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
-                    audioContent.setDuration(dur);
+                    audioContent.setDuration(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
 
                     String album_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                     audioContent.setAlbum(album_name);
@@ -148,13 +141,13 @@ public class AudioGet {
                     Uri imageUri = Uri.withAppendedPath(sArtworkUri, String.valueOf(album_id));
                     audioContent.setArt_uri(imageUri);
 
-                    Uri contentUri = Uri.withAppendedPath(contentLocation, String.valueOf(id));
-                    audioContent.setAssetFileStringUri(contentUri.toString());
+                    audioContent.setAssetFileStringUri(Uri.withAppendedPath(contentLocation, String.valueOf(id)).toString());
 
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                     audioContent.setFilePath(path);
-                    File audio = new File(path);
-                    audioContent.setMusicSize(audio.length());
+                    audioContent.setMusicSize(cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)));
+
+                    audioContent.setGenre(GetGenre(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))));
 
                     String artist_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                     audioContent.setArtist(artist_name);
@@ -166,10 +159,10 @@ public class AudioGet {
                         album.addNumberOfSongs();
                         audioAlbumContents.add(album);
                     }else{
-                        for(int i = 0;i < audioAlbumContents.size();i++){
-                            if(String.valueOf(audioAlbumContents.get(i).getAlbumId()).equals(String.valueOf(album_id))){
-                                audioAlbumContents.get(i).addAudioContent(audioContent);
-                                audioAlbumContents.get(i).addNumberOfSongs();
+                        for(audioAlbumContent albumX : audioAlbumContents){
+                            if(String.valueOf(albumX.getAlbumId()).equals(String.valueOf(album_id))){
+                                albumX.addAudioContent(audioContent);
+                                albumX.addNumberOfSongs();
                             }
                         }
                     }
@@ -177,18 +170,15 @@ public class AudioGet {
             }
             cursor.close();
         }
-        //try saving in cache for better loading next time
-        AudioContext.getExternalCacheDir();
         return audioAlbumContents;
     }
 
     /**Returns an ArrayList of String representing artist ids in the {@link MediaStore} */
     private ArrayList<audioAlbumContent> getAllAlbumsByArtistId(String artist_id, Uri contentLocation) {
         ArrayList<audioAlbumContent> AllAlbums = new ArrayList<>();
-        @SuppressLint("InlinedApi") String[] projection = {MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.ALBUM,MediaStore.Audio.Media.TITLE,
-                MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.ARTIST,MediaStore.Audio.Media.DISPLAY_NAME,MediaStore.Audio.Media._ID,MediaStore.Audio.Media.ARTIST_ID};
-        cursor = AudioContext.getContentResolver().query(contentLocation,projection,
-                MediaStore.Audio.Artists.ARTIST + " like ? ", new String[] {"%"+artist_id+"%"}, "LOWER ("+MediaStore.Audio.Artists.ARTIST + ") ASC");
+        cursor = AudioContext.getContentResolver().query(contentLocation,Projections,
+                MediaStore.Audio.Artists.ARTIST + " like ? ",
+                new String[] {"%"+artist_id+"%"}, "LOWER ("+MediaStore.Audio.Artists.ARTIST + ") ASC");
         ArrayList<String> albumNames = new ArrayList<>();
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -204,8 +194,7 @@ public class AudioGet {
                     long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
                     audioContent.setMusicID(id);
 
-                    @SuppressLint("InlinedApi") long dur = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
-                    audioContent.setDuration(dur);
+                    audioContent.setDuration(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
 
                     String album_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                     audioContent.setAlbum(album_name);
@@ -220,8 +209,9 @@ public class AudioGet {
 
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                     audioContent.setFilePath(path);
-                    File audio = new File(path);
-                    audioContent.setMusicSize(audio.length());
+                    audioContent.setMusicSize(cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)));
+
+                    audioContent.setGenre(GetGenre(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))));
 
                     String artist_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                     audioContent.setArtist(artist_name);
@@ -233,10 +223,10 @@ public class AudioGet {
                         album.addNumberOfSongs();
                         AllAlbums.add(album);
                     }else{
-                        for(int i = 0;i < AllAlbums.size();i++){
-                            if(String.valueOf(AllAlbums.get(i).getAlbumId()).equals(String.valueOf(album_id))){
-                                AllAlbums.get(i).addAudioContent(audioContent);
-                                AllAlbums.get(i).addNumberOfSongs();
+                        for(audioAlbumContent albumX : AllAlbums){
+                            if(String.valueOf(albumX.getAlbumId()).equals(String.valueOf(album_id))){
+                                albumX.addAudioContent(audioContent);
+                                albumX.addNumberOfSongs();
                             }
                         }
                     }
@@ -244,9 +234,6 @@ public class AudioGet {
             }
             cursor.close();
         }
-
-        //try saving in cache for better loading next time
-        AudioContext.getExternalCacheDir();
         return AllAlbums;
     }
 
@@ -254,9 +241,8 @@ public class AudioGet {
      * database of the device */
     public ArrayList<String> getAllArtistIds(Uri contentLocation){
         ArrayList<String> allArtistIds = new ArrayList<>();
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
-        String[] projection = {MediaStore.Audio.Media.ARTIST,MediaStore.Audio.Media.ARTIST_ID,MediaStore.Audio.Media.ARTIST_KEY,MediaStore.Audio.Artists.ARTIST};
-        cursor = AudioContext.getContentResolver().query(contentLocation,projection, selection, null, "LOWER ("+MediaStore.Audio.Artists.ARTIST + ") ASC");
+        String[] projection = {MediaStore.Audio.Media.ARTIST,MediaStore.Audio.Media.ARTIST_ID,MediaStore.Audio.Artists.ARTIST};
+        cursor = AudioContext.getContentResolver().query(contentLocation,projection, Selection, null, "LOWER ("+MediaStore.Audio.Artists.ARTIST + ") ASC");
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
@@ -275,134 +261,49 @@ public class AudioGet {
      * objects from the android {@link MediaStore} database */
     public ArrayList<audioArtistContent> getAllArtists(ArrayList<String> ids,Uri contentLocation){
         ArrayList<audioArtistContent> audioArtistContents = new ArrayList<>();
-        for(int i = 0; i < ids.size();i++ ){
+        for(String id : ids){
             audioArtistContent artist = new audioArtistContent();
-            ArrayList<audioAlbumContent> artistAlbums = getAllAlbumsByArtistId(ids.get(i),contentLocation);
+            ArrayList<audioAlbumContent> artistAlbums = getAllAlbumsByArtistId(id,contentLocation);
             artist.setAlbums(artistAlbums);
-            artist.setArtistName(ids.get(i));
+            artist.setArtistName(id);
             audioArtistContents.add(artist);
         }
         return audioArtistContents;
     }
 
     /** Returns and ArrayList of {@link audioFolderContent} from the android MediaStore */
-    public ArrayList<audioFolderContent> getAllAudioFolderContent(){
+    public ArrayList<audioFolderContent> getAllAudioFolderContent(Uri contentLocation){
         ArrayList<audioFolderContent> musicFolders = new ArrayList<>();
-        Uri allsongsuri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String selection = android.provider.MediaStore.Audio.Media.IS_MUSIC + " != 0";
-        String[] projection = {MediaStore.Audio.Media.DATA,MediaStore.Audio.Media.TITLE,MediaStore.Audio.Media.BUCKET_ID,MediaStore.Audio.Media.ALBUM_ID,MediaStore.Audio.Media.ALBUM,
-                MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.DURATION,MediaStore.Audio.Media.DISPLAY_NAME,MediaStore.Audio.Media._ID};
-        cursor = AudioContext.getContentResolver().query(allsongsuri, projection, selection, null, "LOWER ("+MediaStore.Audio.Media.TITLE + ") ASC");
+        cursor = AudioContext.getContentResolver().query(contentLocation, Projections, Selection, null, "LOWER ("+MediaStore.Audio.Media.TITLE + ") ASC");
         ArrayList<Integer> folders = new ArrayList<>();
-        try {
-            if (cursor != null) {
-                cursor.moveToFirst();
-            }
-            do{
-                audioFolderContent audioFolder = new audioFolderContent(); audioContent audioContent = new audioContent();
-
-                String datapath = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-                File path = new File(datapath);
-                File parent = new File(path.getParent()) ;
-                String parentName = parent.getName();
-                String parentPath = parent.getAbsolutePath();
-
-                int duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
-                audioContent.setMusicSize(duration);
-
-                int bucket_id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.BUCKET_ID));
-
-                String song_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
-                audioContent.setName(song_name);
-
-                String songTitle = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
-                audioContent.setTitle(songTitle);
-
-                long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
-                audioContent.setMusicID(id);
-
-                audioContent.setFilePath(datapath);
-                File audio = new File(datapath);
-                audioContent.setMusicSize(audio.length());
-
-                Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
-                audioContent.setAssetFileStringUri(contentUri.toString());
-
-                String album_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
-                audioContent.setAlbum(album_name);
-
-                @SuppressLint("InlinedApi") long dur = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
-                audioContent.setDuration(dur);
-
-                long album_id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
-                Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
-                Uri imageUri = Uri.withAppendedPath(sArtworkUri, String.valueOf(album_id));
-                audioContent.setArt_uri(imageUri);
-
-                String artist_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                audioContent.setArtist(artist_name);
-
-                if (!folders.contains(bucket_id)) {
-                    folders.add(bucket_id);
-
-                    audioFolder.setBucket_id(bucket_id);
-                    audioFolder.setFolderName(parentName);
-                    audioFolder.setFolderPath(parentPath);
-                    audioFolder.getMusicFiles().add(audioContent);
-                    musicFolders.add(audioFolder);
-                }else{
-                    for(int i = 0;i<musicFolders.size();i++){
-                        if(musicFolders.get(i).getFolderName().equals(parentName)){
-                            musicFolders.get(i).getMusicFiles().add(audioContent);
-                        }
-                    }
-                }
-            }while(cursor.moveToNext());
-            cursor.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        for(int i = 0;i < musicFolders.size();i++){
-            Log.d("audio folders",musicFolders.get(i).getFolderName()+" and path = "+musicFolders.get(i).getFolderPath()+" "+musicFolders.get(i).getNumberOfSongs());
-        }
-
-        //try saving in cache for better loading next time
-        AudioContext.getExternalCacheDir();
-        return musicFolders;
-    }
-
-    public audioContent getMusicMetaData(String datapath){
-        audioContent audioContent = new audioContent();
-        @SuppressLint("InlinedApi") String[] projection = {MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.ALBUM,MediaStore.Audio.Media.TITLE,
-                MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.ARTIST,MediaStore.Audio.Media.DISPLAY_NAME,MediaStore.Audio.Media._ID,MediaStore.Audio.Media.ARTIST_ID};
-        cursor = AudioContext.getContentResolver().query(externalContentUri,projection,
-                MediaStore.Audio.Media.DATA + " like ? ", new String[] {"%"+datapath+"%"}, null);
-
         if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
+            if(cursor.moveToFirst()){
+                do{
+                    audioFolderContent audioFolder = new audioFolderContent(); audioContent audioContent = new audioContent();
 
-                    String song_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
-                    audioContent.setName(song_name);
+                    String dataPath = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+                    File path = new File(dataPath);
+                    File parent = new File(path.getParent());
+                    String parentName = parent.getName();
+                    String parentPath = parent.getAbsolutePath();
 
-                    String songTitle = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
-                    audioContent.setTitle(songTitle);
+                    audioContent.setFilePath(dataPath);
+                    audioContent.setMusicSize(cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)));
+
+                    int bucket_id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.BUCKET_ID));
+
+                    audioContent.setName(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)));
+
+                    audioContent.setTitle(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)));
 
                     long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
                     audioContent.setMusicID(id);
 
-                    Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
-                    audioContent.setAssetFileStringUri(contentUri.toString());
+                    audioContent.setAssetFileStringUri(Uri.withAppendedPath(externalContentUri, String.valueOf(id)).toString());
 
-                    String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-                    audioContent.setFilePath(path);
-                    File audio = new File(path);
-                    audioContent.setMusicSize(audio.length());
+                    audioContent.setAlbum(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)));
 
-                    String album_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
-                    audioContent.setAlbum(album_name);
-
-                    @SuppressLint("InlinedApi") long dur = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
+                    long dur = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
                     audioContent.setDuration(dur);
 
                     long album_id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
@@ -410,8 +311,66 @@ public class AudioGet {
                     Uri imageUri = Uri.withAppendedPath(sArtworkUri, String.valueOf(album_id));
                     audioContent.setArt_uri(imageUri);
 
-                    String artist_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                    audioContent.setArtist(artist_name);
+                    audioContent.setGenre(GetGenre(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))));
+
+                    audioContent.setArtist(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
+
+                    if (!folders.contains(bucket_id)) {
+                        folders.add(bucket_id);
+                        audioFolder.setBucket_id(bucket_id);
+                        audioFolder.setFolderName(parentName);
+                        audioFolder.setFolderPath(parentPath);
+                        audioFolder.getMusicFiles().add(audioContent);
+                        musicFolders.add(audioFolder);
+                    }else{
+                         for (audioFolderContent folderX : musicFolders){
+                             if(folderX.getFolderName().equals(parentName)){
+                                 folderX.getMusicFiles().add(audioContent);
+                             }
+                         }
+                    }
+                }while(cursor.moveToNext());
+            }
+        }
+        cursor.close();
+        for(int i = 0;i < musicFolders.size();i++){
+            Log.d("audio folders",musicFolders.get(i).getFolderName()+" and path = "+musicFolders.get(i).getFolderPath()+" "+musicFolders.get(i).getNumberOfSongs());
+        }
+        return musicFolders;
+    }
+
+    public audioContent getMusicMetaData(long audio_id){
+        audioContent audioContent = new audioContent();
+        cursor = AudioContext.getContentResolver().query(externalContentUri,Projections,
+                MediaStore.Audio.Media._ID + " like ? ", new String[] {"%"+audio_id+"%"}, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    audioContent.setName(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)));
+
+                    audioContent.setTitle(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)));
+
+                    long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
+                    audioContent.setMusicID(id);
+
+                    audioContent.setAssetFileStringUri(Uri.withAppendedPath(externalContentUri, String.valueOf(id)).toString());
+
+                    String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+                    audioContent.setFilePath(path);
+                    audioContent.setMusicSize(cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)));
+
+                    audioContent.setAlbum(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)));
+
+                    audioContent.setDuration(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
+
+                    long album_id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
+                    Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+                    Uri imageUri = Uri.withAppendedPath(sArtworkUri, String.valueOf(album_id));
+                    audioContent.setArt_uri(imageUri);
+
+                    audioContent.setGenre(GetGenre(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))));
+
+                    audioContent.setArtist(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
 
                 } while (cursor.moveToNext());
             }
@@ -423,46 +382,38 @@ public class AudioGet {
     /** returns an ArrayList of audioContent whose names all match the search string */
     public ArrayList<audioContent> searchMusic(String audioTitle){
         ArrayList<audioContent> audioContents = new ArrayList<>();
-        @SuppressLint("InlinedApi") String[] projection = {MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.ALBUM,MediaStore.Audio.Media.TITLE,
-                MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.ARTIST,MediaStore.Audio.Media.DISPLAY_NAME,MediaStore.Audio.Media._ID,MediaStore.Audio.Media.ARTIST_ID};
-        cursor = AudioContext.getContentResolver().query(externalContentUri,projection,
+        cursor = AudioContext.getContentResolver().query(externalContentUri,Projections,
                 MediaStore.Audio.Media.TITLE + " like ? ", new String[] {"%"+audioTitle+"%"}, "LOWER ("+MediaStore.Audio.Media.TITLE + ") ASC");
-
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
                     audioContent audioContent = new audioContent();
 
-                    String song_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
-                    audioContent.setName(song_name);
+                    audioContent.setName(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)));
 
-                    String songTitle = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
-                    audioContent.setTitle(songTitle);
+                    audioContent.setTitle(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)));
 
                     long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
                     audioContent.setMusicID(id);
 
-                    Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
-                    audioContent.setAssetFileStringUri(contentUri.toString());
+                    audioContent.setAssetFileStringUri(Uri.withAppendedPath(externalContentUri, String.valueOf(id)).toString());
 
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                     audioContent.setFilePath(path);
-                    File audio = new File(path);
-                    audioContent.setMusicSize(audio.length());
+                    audioContent.setMusicSize(cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)));
 
-                    String album_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
-                    audioContent.setAlbum(album_name);
+                    audioContent.setAlbum(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)));
 
-                    @SuppressLint("InlinedApi") long dur = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
-                    audioContent.setDuration(dur);
+                    audioContent.setDuration(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
 
                     long album_id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
                     Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
                     Uri imageUri = Uri.withAppendedPath(sArtworkUri, String.valueOf(album_id));
                     audioContent.setArt_uri(imageUri);
 
-                    String artist_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                    audioContent.setArtist(artist_name);
+                    audioContent.setGenre(GetGenre(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))));
+
+                    audioContent.setArtist(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
 
                     audioContents.add(audioContent);
 
@@ -476,46 +427,39 @@ public class AudioGet {
     /** returns an ArrayList of albumHolder whose names all match the search string */
     public ArrayList<audioContent> searchAlbum(String albumName){
         ArrayList<audioContent> audioContents = new ArrayList<>();
-        @SuppressLint("InlinedApi") String[] projection = {MediaStore.Audio.AudioColumns.DATA, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.AudioColumns.ALBUM,MediaStore.Audio.AudioColumns.TITLE,
-                MediaStore.Audio.AudioColumns.DURATION,MediaStore.Audio.ArtistColumns.ARTIST,MediaStore.Audio.Media.DISPLAY_NAME,MediaStore.Audio.Media._ID,MediaStore.Audio.Media.ARTIST_ID};
-        cursor = AudioContext.getContentResolver().query(externalContentUri,projection,
+        cursor = AudioContext.getContentResolver().query(externalContentUri,Projections,
                 MediaStore.Audio.Media.ALBUM + " like ? ", new String[] {"%"+albumName+"%"}, "LOWER ("+MediaStore.Audio.Media.TITLE + ") ASC");
-
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
                     audioContent audioContent = new audioContent();
 
-                    String song_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
-                    audioContent.setName(song_name);
+                    audioContent.setName(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)));
 
-                    String songTitle = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
-                    audioContent.setTitle(songTitle);
+                    audioContent.setTitle(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)));
 
                     long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
                     audioContent.setMusicID(id);
 
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                     audioContent.setFilePath(path);
-                    File audio = new File(path);
-                    audioContent.setMusicSize(audio.length());
+                    audioContent.setMusicSize(cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)));
 
-                    Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
-                    audioContent.setAssetFileStringUri(contentUri.toString());
+                    audioContent.setAssetFileStringUri(Uri.withAppendedPath(externalContentUri, String.valueOf(id)).toString());
 
                     String album_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                     audioContent.setAlbum(album_name);
 
-                    @SuppressLint("InlinedApi") long dur = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
-                    audioContent.setDuration(dur);
+                    audioContent.setDuration(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
 
                     long album_id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
                     Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
                     Uri imageUri = Uri.withAppendedPath(sArtworkUri, String.valueOf(album_id));
                     audioContent.setArt_uri(imageUri);
 
-                    String artist_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                    audioContent.setArtist(artist_name);
+                    audioContent.setGenre(GetGenre(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))));
+
+                    audioContent.setArtist(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
 
                     audioContents.add(audioContent);
 
@@ -529,46 +473,38 @@ public class AudioGet {
     /** returns an ArrayList of artistHolder whose names all match the search string */
     public ArrayList<audioContent> searchArtist(String artistName){
         ArrayList<audioContent> audioContents = new ArrayList<>();
-        @SuppressLint("InlinedApi") String[] projection = {MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID, MediaStore.Audio.Media.ALBUM,MediaStore.Audio.Media.TITLE,
-                MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.ARTIST,MediaStore.Audio.Media.DISPLAY_NAME,MediaStore.Audio.Media._ID,MediaStore.Audio.Media.ARTIST_ID};
-        cursor = AudioContext.getContentResolver().query(externalContentUri,projection,
+        cursor = AudioContext.getContentResolver().query(externalContentUri,Projections,
                 MediaStore.Audio.Media.ARTIST + " like ? ", new String[] {"%"+artistName+"%"}, "LOWER ("+MediaStore.Audio.Media.TITLE + ") ASC");
-
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
                     audioContent audioContent = new audioContent();
 
-                    String song_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
-                    audioContent.setName(song_name);
+                    audioContent.setName(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)));
 
-                    String songTitle = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
-                    audioContent.setTitle(songTitle);
+                    audioContent.setTitle(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)));
 
                     long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
                     audioContent.setMusicID(id);
 
-                    Uri contentUri = Uri.withAppendedPath(externalContentUri, String.valueOf(id));
-                    audioContent.setAssetFileStringUri(contentUri.toString());
+                    audioContent.setAssetFileStringUri(Uri.withAppendedPath(externalContentUri, String.valueOf(id)).toString());
 
                     String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                     audioContent.setFilePath(path);
-                    File audio = new File(path);
-                    audioContent.setMusicSize(audio.length());
+                    audioContent.setMusicSize(cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)));
 
-                    String album_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
-                    audioContent.setAlbum(album_name);
+                    audioContent.setAlbum(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)));
 
-                    @SuppressLint("InlinedApi") long dur = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
-                    audioContent.setDuration(dur);
+                    audioContent.setDuration(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
 
                     long album_id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
                     Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
                     Uri imageUri = Uri.withAppendedPath(sArtworkUri, String.valueOf(album_id));
                     audioContent.setArt_uri(imageUri);
 
-                    String artist_name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                    audioContent.setArtist(artist_name);
+                    audioContent.setGenre(GetGenre(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))));
+
+                    audioContent.setArtist(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
 
                     audioContents.add(audioContent);
 
@@ -578,5 +514,76 @@ public class AudioGet {
         }
         return audioContents;
     }
+
+    public ArrayList<audioGenreContents> getAudioContentsByGenre(Uri contentLocation){
+        ArrayList<audioGenreContents> allGenreContent = new ArrayList<>();
+        cursor = AudioContext.getContentResolver().query(contentLocation,Projections, Selection, null, "LOWER ("+MediaStore.Audio.Media.TITLE + ") ASC");
+        ArrayList<String> genreNames = new ArrayList<>();
+        if(cursor != null){
+            if(cursor.moveToFirst()){
+                do{
+                    audioContent audioContent = new audioContent();
+
+                    audioContent.setName(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)));
+
+                    audioContent.setTitle(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)));
+
+                    long id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
+                    audioContent.setMusicID(id);
+                    Uri contentUri = Uri.withAppendedPath(contentLocation, String.valueOf(id));
+                    audioContent.setAssetFileStringUri(contentUri.toString());
+
+                    String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+                    audioContent.setFilePath(path);
+                    audioContent.setMusicSize(cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE)));
+
+                    audioContent.setAlbum(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)));
+
+                    audioContent.setDuration(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
+
+                    long album_id = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
+                    Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+                    Uri imageUri = Uri.withAppendedPath(sArtworkUri, String.valueOf(album_id));
+                    audioContent.setArt_uri(imageUri);
+
+                    audioContent.setArtist(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
+
+                    audioContent.setComposer(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.COMPOSER)));
+
+                    String genre = ""; String genreId = "";
+                    String[] genresProj = {
+                            MediaStore.Audio.Genres.NAME,
+                            MediaStore.Audio.Genres._ID
+                    };
+
+                    Uri uri = MediaStore.Audio.Genres.getContentUriForAudioId("external", cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)) );
+                    Cursor genresCursor = AudioContext.getContentResolver().query(uri, genresProj , null, null, null);
+                    int genreIndex = genresCursor.getColumnIndexOrThrow(MediaStore.Audio.Genres.NAME);
+
+                    while (genresCursor.moveToNext()) {
+                        genre = genresCursor.getString(genreIndex);
+                        genreId = genresCursor.getString(genresCursor.getColumnIndex(MediaStore.Audio.Genres._ID));
+                    }
+                    genresCursor.close();
+                    if(!genreNames.contains(genre)){
+                        genreNames.add(genre);
+                        audioGenreContents Genre = new audioGenreContents();
+                        Genre.setGenreName(genre); Genre.setGenreId(genreId);
+                        Genre.addGenreMusic(audioContent);
+                        allGenreContent.add(Genre);
+                    }else {
+                        for(audioGenreContents genreX : allGenreContent){
+                            if(genre.equals(genreX.getGenreName())){
+                                genreX.addGenreMusic(audioContent);
+                            }
+                        }
+                    }
+                }while (cursor.moveToNext());
+            }
+        }
+        cursor.close();
+        return allGenreContent;
+    }
+
 
 }

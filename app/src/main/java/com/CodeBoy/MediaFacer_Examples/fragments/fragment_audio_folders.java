@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.CodeBoy.MediaFacer.AudioGet;
 import com.CodeBoy.MediaFacer.MediaFacer;
 import com.CodeBoy.MediaFacer.mediaHolders.audioFolderContent;
 import com.CodeBoy.MediaFacer_Examples.R;
@@ -85,7 +86,7 @@ public class fragment_audio_folders extends Fragment {
 
         @Override
         protected ArrayList<audioFolderContent> doInBackground(Object... objects) {
-            buckets = MediaFacer.withAudioContex(getActivity()).getAllAudioFolderContent();
+            buckets = MediaFacer.withAudioContex(getActivity()).getAllAudioFolderContent(AudioGet.externalContentUri);
             return buckets;
         }
 

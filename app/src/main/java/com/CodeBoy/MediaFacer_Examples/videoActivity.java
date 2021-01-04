@@ -59,7 +59,7 @@ public class videoActivity extends AppCompatActivity {
 
         final ArrayList<videoFolderContent> videoFolders = new ArrayList<>();
         videoFolders.add(new videoFolderContent("all","*All*"));
-        videoFolders.addAll(MediaFacer.withVideoContex(this).getAbsoluteVideoFolders(VideoGet.externalContentUri));
+        videoFolders.addAll(MediaFacer.withVideoContex(this).getAllVideoFolders(VideoGet.externalContentUri));
 
         final ArrayList<String> folders = new ArrayList<>();
         for(int i = 0;i < videoFolders.size();i++){

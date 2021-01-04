@@ -11,14 +11,12 @@ import java.util.ArrayList;
 
 public class VideoGet {
     private static  VideoGet videoGet;
-    private Context videoContex;
+    private final Context videoContex;
     public static final Uri externalContentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
     public static final Uri internalContentUri = MediaStore.Video.Media.INTERNAL_CONTENT_URI;
     private static Cursor cursor;
 
-
     private VideoGet(Context contx){
-        //set up picture getting params
         videoContex = contx.getApplicationContext();
     }
 
@@ -29,22 +27,24 @@ public class VideoGet {
         return videoGet;
     }
 
+    @SuppressLint("InlinedApi") String[] Projections = {
+            MediaStore.Video.Media.DATA,
+            MediaStore.Video.Media.DISPLAY_NAME,
+            MediaStore.Video.Media.DURATION,
+            MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
+            MediaStore.Video.Media.BUCKET_ID,
+            MediaStore.Video.Media.SIZE,
+            MediaStore.Video.Media._ID,
+            MediaStore.Video.Media.ALBUM,
+            MediaStore.Video.Media.DATE_TAKEN,
+            MediaStore.Video.Media.ARTIST};
+
+
     /**Returns an Arraylist of {@link videoContent}  */
     @SuppressLint("InlinedApi")
     public ArrayList<videoContent> getAllVideoContent(Uri contentLocation) {
         ArrayList<videoContent> allVideo = new ArrayList<>();
-        @SuppressLint("InlinedApi") String[] projection = {
-                MediaStore.Video.VideoColumns.DATA,
-                MediaStore.Video.Media.DISPLAY_NAME,
-                MediaStore.Video.Media.DURATION,
-                MediaStore.Video.Media.SIZE,
-                MediaStore.Video.Media._ID,
-                MediaStore.Video.Media.DATE_ADDED,
-                MediaStore.Video.Media.DATE_MODIFIED,
-                MediaStore.Video.Media.DATE_TAKEN,
-                MediaStore.Video.Media.ALBUM,
-                MediaStore.Video.Media.ARTIST};
-        cursor = videoContex.getContentResolver().query(contentLocation, projection, null, null, "LOWER ("+MediaStore.Video.Media.DATE_TAKEN+") DESC");//DESC ASC
+        cursor = videoContex.getContentResolver().query(contentLocation, Projections, null, null, "LOWER ("+MediaStore.Video.Media.DATE_TAKEN+") DESC");//DESC ASC
         try {
             cursor.moveToFirst();
             do{
@@ -77,60 +77,11 @@ public class VideoGet {
         return allVideo;
     }
 
-    /**Returns an Arraylist of {@link videoFolderContent}  */
-    public ArrayList<videoFolderContent> getVideoFolders(Uri contentLocation){
-        ArrayList<videoFolderContent> allVideoFolders = new ArrayList<>();
-        ArrayList<Integer> videoPaths = new ArrayList<>();
-        @SuppressLint("InlinedApi") String[] projection = {
-                MediaStore.Video.Media.DATA,
-                MediaStore.Video.Media.DISPLAY_NAME,
-                MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
-                MediaStore.Video.Media.BUCKET_ID,
-                MediaStore.Video.Media.DATE_ADDED};
-        cursor = videoContex.getContentResolver().query(contentLocation, projection, null, null, "LOWER ("+MediaStore.Video.Media.DATE_TAKEN+") DESC");//DESC
-        try {
-            cursor.moveToFirst();
-            do{
-                videoFolderContent videoFolder = new videoFolderContent();
-                String folder = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME));
-                String datapath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
-
-                int bucket_id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_ID));
-
-                String folderpaths = datapath.substring(0, datapath.lastIndexOf(folder+"/"));
-                folderpaths = folderpaths+folder+"/";
-
-                if (!videoPaths.contains(bucket_id)) {
-                    videoPaths.add(bucket_id);
-
-                    videoFolder.setBucket_id(bucket_id);
-                    videoFolder.setFolderPath(folderpaths);
-                    videoFolder.setFolderName(folder);
-                    allVideoFolders.add(videoFolder);
-                }
-            }while(cursor.moveToNext());
-            cursor.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return allVideoFolders;
-    }
-
     /**Returns an Arraylist of {@link videoContent} in a specific folder  */
+    @SuppressLint("InlinedApi")
     public ArrayList<videoContent> getAllVideoContentByBucket_id(int bucket_id){
         ArrayList<videoContent> videoContents = new ArrayList<>();
-        @SuppressLint("InlinedApi") String[] projection = {
-                MediaStore.Video.VideoColumns.DATA ,
-                MediaStore.Video.Media.DISPLAY_NAME,
-                MediaStore.Video.Media.DURATION,
-                MediaStore.Video.Media.SIZE,
-                MediaStore.Video.Media._ID,
-                MediaStore.Video.Media.DATE_ADDED,
-                MediaStore.Video.Media.DATE_MODIFIED,
-                MediaStore.Video.Media.DATE_TAKEN,
-                MediaStore.Video.Media.ALBUM,
-                MediaStore.Video.Media.ARTIST};
-       cursor = videoContex.getContentResolver().query(externalContentUri, projection,
+       cursor = videoContex.getContentResolver().query(externalContentUri, Projections,
                 MediaStore.Video.Media.BUCKET_ID + " like ? ", new String[] {"%"+bucket_id+"%"}, "LOWER ("+MediaStore.Video.Media.DATE_TAKEN+") DESC");//DESC
         try {
             cursor.moveToFirst();
@@ -165,23 +116,11 @@ public class VideoGet {
     }
 
     /**Returns an Arraylist of {@link videoFolderContent} with each videoFolderContent having an Arraylist of all it videoContent*/
-    public ArrayList<videoFolderContent> getAbsoluteVideoFolders(Uri contentLocation){
+    @SuppressLint("InlinedApi")
+    public ArrayList<videoFolderContent> getAllVideoFolders(Uri contentLocation){
         ArrayList<videoFolderContent> allVideoFolders = new ArrayList<>();
         ArrayList<Integer> videoPaths = new ArrayList<>();
-        @SuppressLint("InlinedApi") String[] projection = {
-                MediaStore.Video.Media.DATA,
-                MediaStore.Video.Media.DISPLAY_NAME,
-                MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
-                MediaStore.Video.Media.BUCKET_ID,
-                MediaStore.Video.Media.SIZE,
-                MediaStore.Video.Media._ID,
-                MediaStore.Video.Media.DURATION,
-                MediaStore.Video.Media.DATE_ADDED,
-                MediaStore.Video.Media.DATE_MODIFIED,
-                MediaStore.Video.Media.DATE_TAKEN,
-                MediaStore.Video.Media.ALBUM,
-                MediaStore.Video.Media.ARTIST};
-        cursor = videoContex.getContentResolver().query(contentLocation, projection, null, null, "LOWER ("+MediaStore.Video.Media.DATE_TAKEN+") DESC");//DESC
+        cursor = videoContex.getContentResolver().query(contentLocation, Projections, null, null, "LOWER ("+MediaStore.Video.Media.DATE_TAKEN+") DESC");//DESC
         try{
             cursor.moveToFirst();
             do{
