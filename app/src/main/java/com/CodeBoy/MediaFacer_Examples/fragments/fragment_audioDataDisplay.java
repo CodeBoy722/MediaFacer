@@ -72,7 +72,7 @@ public class fragment_audioDataDisplay extends Fragment {
             }
 
             @Override
-            public void onMusicItemLongClicked(int position) {
+            public void onMusicItemLongClicked(int position, audioContent audio) {
                 showAudioInfo(position);
             }
         };

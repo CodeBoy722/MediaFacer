@@ -26,14 +26,18 @@ public class MediaFacer {
     /** scans all media content on device */
     private void ScanAllMedia(){
 
-
-
     }
 
     /** save general information about all media on de vice in  */
     private void UpdateGeneralMediaInfo(){
 
+    }
 
+    public static void DeleteMedia(String mediaId,String mediaType){
+
+    }
+
+    public static void RenameMedia(String mediaId,String mediaType){
 
     }
 

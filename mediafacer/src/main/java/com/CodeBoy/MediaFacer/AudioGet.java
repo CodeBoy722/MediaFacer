@@ -47,7 +47,6 @@ public class AudioGet {
             MediaStore.Audio.Media.DATA,
             MediaStore.Audio.Media.DURATION,
             MediaStore.Audio.Media.BUCKET_ID,
-
     };
 
     /**Returns an Arraylist of {@link audioContent} */
@@ -84,9 +83,9 @@ public class AudioGet {
 
                     audioContent.setArtist(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
 
-                    audioContent.setGenre(GetGenre(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))));
-
                     audioContent.setComposer(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.COMPOSER)));
+
+                    audioContent.setGenre(GetGenre(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID))));
 
                     allAudioContent.add(audioContent);
                 } while (cursor.moveToNext());

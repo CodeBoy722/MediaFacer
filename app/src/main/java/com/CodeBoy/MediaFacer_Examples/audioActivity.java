@@ -14,6 +14,7 @@ import com.CodeBoy.MediaFacer_Examples.fragments.fragmentAudioContents;
 import com.CodeBoy.MediaFacer_Examples.fragments.fragment_audio_albums;
 import com.CodeBoy.MediaFacer_Examples.fragments.fragment_audio_artists;
 import com.CodeBoy.MediaFacer_Examples.fragments.fragment_audio_folders;
+import com.CodeBoy.MediaFacer_Examples.fragments.fragment_audio_genre;
 import com.CodeBoy.utils.ZoomOutPageTransformer;
 import com.google.android.material.tabs.TabLayout;
 
@@ -22,6 +23,7 @@ public class audioActivity extends AppCompatActivity {
     fragment_audio_albums allalums;
     fragment_audio_artists allartist;
     fragment_audio_folders allfolders;
+    fragment_audio_genre allGenres;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,9 @@ public class audioActivity extends AppCompatActivity {
                     case 3 :
                         allfolders.firstLoad();
                         break;
+                    case 4 :
+                        allGenres.firstLoad();
+                        break;
                 }
             }
 
@@ -66,7 +71,7 @@ public class audioActivity extends AppCompatActivity {
 
     private class ContentPager extends FragmentPagerAdapter {
 
-        private final int[] TAB_TITLES = new int[]{R.string.all_audio,R.string.albums,R.string.artists,R.string.folders};
+        private final int[] TAB_TITLES = new int[]{R.string.all_audio,R.string.albums,R.string.artists,R.string.folders,R.string.Genres};
 
         ContentPager(@NonNull FragmentManager fm, int behavior) {
             super(fm, behavior);
@@ -92,6 +97,10 @@ public class audioActivity extends AppCompatActivity {
                 case 3 :
                     fragment = new fragment_audio_folders();
                     allfolders = (fragment_audio_folders) fragment;
+                    break;
+                case 4 :
+                    fragment = new fragment_audio_genre();
+                    allGenres = (fragment_audio_genre) fragment;
                     break;
             }
             return fragment;

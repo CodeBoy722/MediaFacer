@@ -53,7 +53,7 @@ public class audioRecycleAdapter extends RecyclerView.Adapter<audioRecycleAdapte
 
     public interface musicActionListerner{
         void onMusicItemClicked(int position, audioContent audio);
-        void onMusicItemLongClicked(int position);
+        void onMusicItemLongClicked(int position, audioContent audio);
     }
 
     class musicViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -119,7 +119,7 @@ public class audioRecycleAdapter extends RecyclerView.Adapter<audioRecycleAdapte
 
         @Override
         public boolean onLongClick(View v) {
-             actionListerner.onMusicItemLongClicked(itemPosition);
+             actionListerner.onMusicItemLongClicked(itemPosition,musiclist.get(itemPosition));
             return false;
         }
     }
