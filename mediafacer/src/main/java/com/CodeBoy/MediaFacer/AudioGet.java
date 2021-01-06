@@ -33,6 +33,7 @@ public class AudioGet {
         }
         return audioGet;
     }
+
     String Selection = android.provider.MediaStore.Audio.Media.IS_MUSIC + " != 0";
     @SuppressLint("InlinedApi") private final String[] Projections = {
             MediaStore.Audio.Media.TITLE,
@@ -558,12 +559,17 @@ public class AudioGet {
                     Uri uri = MediaStore.Audio.Genres.getContentUriForAudioId("external", cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)) );
                     Cursor genresCursor = AudioContext.getContentResolver().query(uri, genresProj , null, null, null);
                     int genreIndex = genresCursor.getColumnIndexOrThrow(MediaStore.Audio.Genres.NAME);
-
-                    while (genresCursor.moveToNext()) {
-                        genre = genresCursor.getString(genreIndex);
-                        genreId = genresCursor.getString(genresCursor.getColumnIndex(MediaStore.Audio.Genres._ID));
+                    if(genresCursor.moveToFirst()){
+                        do{
+                            genreId = genresCursor.getString(genresCursor.getColumnIndex(MediaStore.Audio.Genres._ID));
+                            genre = genresCursor.getString(genreIndex);
+                            Log.d("Genre Debug ",cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE))+" "+genre);
+                        }while (genresCursor.moveToNext());
                     }
+
+                    audioContent.setGenre(genre);
                     genresCursor.close();
+
                     if(!genreNames.contains(genre)){
                         genreNames.add(genre);
                         audioGenreContents Genre = new audioGenreContents();
@@ -581,6 +587,11 @@ public class AudioGet {
             }
         }
         cursor.close();
+        for(audioGenreContents genreX : allGenreContent){
+            if(genreX.getGenreName() == null || genreX.getGenreName().trim().isEmpty()){
+                genreX.setGenreName("Unspecified");
+            }
+        }
         return allGenreContent;
     }
 

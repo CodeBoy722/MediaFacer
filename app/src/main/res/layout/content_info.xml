@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="300dp"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardBackgroundColor="@android:color/transparent"
     app:cardCornerRadius="25dp"
     app:cardElevation="10dp">
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:cardBackgroundColor="@android:color/transparent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
             <ImageView
                 android:id="@+id/pic"
@@ -36,19 +44,19 @@
 
                 <TextView
                     android:id="@+id/textView2"
-                    android:layout_width="50dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:text="@string/filename"
                     android:textColor="@android:color/holo_purple"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/filename"
-                    android:layout_width="100dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:text="TextView" />
             </LinearLayout>
 
@@ -66,19 +74,19 @@
 
                 <TextView
                     android:id="@+id/textView6"
-                    android:layout_width="50dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:text="@string/fullpath"
                     android:textColor="@android:color/holo_purple"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/fullpath"
-                    android:layout_width="100dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:text="TextView" />
             </LinearLayout>
 
@@ -97,26 +105,26 @@
 
                 <TextView
                     android:id="@+id/textView10"
-                    android:layout_width="50dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:text="@string/size"
                     android:textColor="@android:color/holo_purple"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/size"
-                    android:layout_width="100dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:text="TextView" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayout6"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
@@ -127,23 +135,23 @@
 
                 <TextView
                     android:id="@+id/textView"
-                    android:layout_width="50dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:text="Composer"
                     android:textColor="@android:color/holo_purple"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/composer"
-                    android:layout_width="100dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:text="TextView" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -157,22 +165,26 @@
 
                 <TextView
                     android:id="@+id/textView4"
-                    android:layout_width="50dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:text="Genre"
                     android:textColor="@android:color/holo_purple"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/genre"
-                    android:layout_width="100dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:text="TextView" />
             </LinearLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+
+
+
+</RelativeLayout>
