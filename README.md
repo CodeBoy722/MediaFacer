@@ -59,7 +59,7 @@ get all audio files
 ArrayList<audioContent> audioContents;
 audioContents = MediaFacer
                 .withAudioContex(mContext)
-                .getAllAudioContent(AudioGet.externalContentUri;
+                .getAllAudioContent(AudioGet.externalContentUri);
 ```
 
 setting and playing audio in MediaPlayer object from audioContent class
