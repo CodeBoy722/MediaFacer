@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.CodeBoy.MediaFacer_Examples">
+    package="com.codeboy.mediafacer_examples">
 
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -24,19 +24,20 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name="com.CodeBoy.MediaFacer_Examples.videoActivity"
+        <activity android:name="com.codeboy.mediafacer_examples.videoActivity"
             android:screenOrientation="portrait">
 
         </activity>
 
-        <activity android:name="com.CodeBoy.MediaFacer_Examples.audioActivity"
+        <activity android:name="com.codeboy.mediafacer_examples.audioActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name="com.CodeBoy.MediaFacer_Examples.pictureActivity"
+        <activity android:name="com.codeboy.mediafacer_examples.pictureActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name="com.CodeBoy.MediaFacer_Examples.MainActivity"
-            android:screenOrientation="portrait">
+        <activity android:name="com.codeboy.mediafacer_examples.MainActivity"
+            android:screenOrientation="portrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
