@@ -157,4 +157,31 @@ public class PictureGet {
         return absolutePictureFolders;
     }
 
+   /* suspend fun getImages(count: Int, start: Int): Three<MutableList<Three<Uri?, String?, Date>>, Boolean, Int> {
+        val imagesList = mutableListOf<Three<Uri?, String?, Date>>()
+        var index = start
+
+        return withContext(Dispatchers.IO) {
+            while (imageCursor?.moveToPosition(i) == true) {
+                val id = imageIdColumn?.let { imageCursor.getLong(it) }
+                val dateModified = Date(TimeUnit.SECONDS.toMillis(imageCursor.getLong(imageDateModifiedColumn ?: 0)))
+
+                val displayName = imageDisplayNameColumn?.let { imageCursor.getString(it) }
+                val contentUri = id?.let {
+                    ContentUris.withAppendedId(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                            it
+                    )
+                }
+                index++
+                contentUri?.let { imagesList.add(Three(contentUri, displayName, dateModified)) }
+                if (index == count)
+                    break
+            }
+            val areAllLoaded = index == imagesToLoad
+            return@withContext Three(imagesList, areAllLoaded, index)
+        }
+    }*/
+
+
 }
