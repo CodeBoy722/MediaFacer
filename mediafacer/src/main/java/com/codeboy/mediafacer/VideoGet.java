@@ -120,7 +120,8 @@ public class VideoGet {
     public ArrayList<videoFolderContent> getAllVideoFolders(Uri contentLocation){
         ArrayList<videoFolderContent> allVideoFolders = new ArrayList<>();
         ArrayList<Integer> videoPaths = new ArrayList<>();
-        cursor = videoContext.getContentResolver().query(contentLocation, Projections, null, null, "LOWER ("+MediaStore.Video.Media.DATE_TAKEN+") DESC");//DESC
+        cursor = videoContext.getContentResolver().query(contentLocation, Projections,
+                null, null, "LOWER ("+MediaStore.Video.Media.DATE_TAKEN+") DESC");//DESC
         try{
             cursor.moveToFirst();
             do{

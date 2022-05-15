@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         mPicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isStoragePermisssionGranted()){
+                if(isStoragePermissionGranted()){
                     startActivity(picIntent);
                 }else {
                     continueAfterPermission = 1;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         mAudioBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isStoragePermisssionGranted()){
+                if(isStoragePermissionGranted()){
                     startActivity(audioIntent);
                 }else {
                     continueAfterPermission = 2;
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         mVideoBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isStoragePermisssionGranted()){
+                if(isStoragePermissionGranted()){
                     startActivity(videoIntent);
                 }else{
                     continueAfterPermission = 3;
@@ -78,11 +78,9 @@ public class MainActivity extends AppCompatActivity {
         final String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE};
         ActivityCompat.requestPermissions(this, permissions, MY_PERMISSIONS_REQUEST_STORAGE_PERMISSIONS);
-
-
     }
 
-    private boolean isStoragePermisssionGranted(){
+    private boolean isStoragePermissionGranted(){
         boolean granted = false;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -98,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return granted;
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -117,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void continueAfterPermissionGrant(){
         switch (continueAfterPermission){
             case 1 :
@@ -130,6 +128,37 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         continueAfterPermission = 0;
+    }
+
+
+    public boolean siValid(String s){
+
+        String[] list = s.split("");
+        String controlValue = list[0];
+        boolean result = false;
+
+        for(int i = 1; i<list.length;i++){
+            if(controlValue.equals("(")){
+                if(!list[i].equals("(") || !list[i].equals("{") || !list[i].equals("[") || !list[i].equals(")")){
+                    result = false;
+                }else result = true;
+            }else
+
+            if(controlValue.equals("{")){
+                if(!list[i].equals("(") || !list[i].equals("{") || !list[i].equals("[") || !list[i].equals("}")){
+                    result = false;
+                }else result = true;
+            }else
+
+            if(controlValue.equals("[")){
+                if(!list[i].equals("(") || !list[i].equals("{") || !list[i].equals("[") || !list[i].equals("]")){
+                    result = false;
+                }else result = true;
+            }
+
+            controlValue = list[i];
+        }
+        return result;
     }
 
 }

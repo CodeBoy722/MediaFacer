@@ -40,7 +40,6 @@ public class fragment_audioDataDisplay extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         ProgressBar progressBar = view.findViewById(R.id.progress);
         progressBar.setVisibility(View.GONE);
 

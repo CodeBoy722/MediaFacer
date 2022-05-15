@@ -134,6 +134,7 @@ public class PictureGet {
                 int bucket_id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_ID));
 
                 String folderpaths = datapath.substring(0, datapath.lastIndexOf(folder+"/"));
+
                 folderpaths = folderpaths+folder+"/";
                 if (!picturePaths.contains(bucket_id)) {
                     picturePaths.add(bucket_id);

@@ -53,7 +53,6 @@ public class imageRecycleAdapter extends RecyclerView.Adapter<imageRecycleAdapte
     }
 
     class pictureViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        //define vies
         ImageView picture;
         int position;
         pictureViewHolder(@NonNull View itemView) {
@@ -86,6 +85,7 @@ public class imageRecycleAdapter extends RecyclerView.Adapter<imageRecycleAdapte
             actionListener.onPictureItemLongClicked(position);
             return false;
         }
+
     }
 
 }

@@ -103,7 +103,6 @@ public class fragment_audio_folders extends Fragment {
             data_recycler.setAdapter(adapter);
             progressBar.setVisibility(View.GONE);
         }
-
     }
 
 }
