@@ -50,7 +50,7 @@ public class fragment_audio_genre extends Fragment {
         progressBar = parentView.findViewById(R.id.progress);
         progressBar.setVisibility(View.GONE);
 
-        GenreNames.setHasFixedSize(true);
+        // GenreNames.setHasFixedSize(true);
         GenreNames.setItemViewCacheSize(20);
         GenreNames.setDrawingCacheEnabled(true);
         GenreNames.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
